@@ -1,0 +1,42 @@
+/* ------------------------- */
+.textarea {
+    border-radius: 12px;
+
+    /* 文本间距 */
+    line-height: 1.2;
+
+    /* 默认边框颜色 */
+    border: 1px solid #ccc;
+
+    /* 允许用户根据需要调整高度 */
+    resize: vertical;
+
+    /* 长文本时自动换行 */
+    overflow-wrap: break-word;
+
+    /* 保留空格和换行符 */
+    white-space: pre-wrap;
+
+    /* 添加 transform 过渡 */
+    transition: box-shadow 0.3s ease, border-color 0.3s ease, transform 0.5s ease;
+}
+
+
+/* 输入框聚焦时的柔和蓝色光晕效果 */
+.textarea:focus {
+    /* 边框颜色变蓝 */
+    border-color: #0070C0;
+
+    /* 淡蓝色光晕效果 */
+    box-shadow: 0 0 5px rgba(79, 171, 237, 0.5);
+
+    /* 移除默认的聚焦轮廓 */
+    outline: none;
+}
+
+/* 鼠标悬停时的放大效果 */
+.textarea:hover {
+    /* transform: scale(1.02); */
+    /* 更深的蓝色光晕效果 */
+    box-shadow: 0 0 4px rgba(79, 171, 237, 0.2);
+}   

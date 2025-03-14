@@ -1,0 +1,28 @@
+/* 整体布局 */
+#view_boxplot {
+    display: flex;
+    flex-direction: column;
+
+    width: 100%;
+    /* background-color: #0070C0; */
+}
+
+
+/* 内容区域整体布局 */
+#content_boxplot {
+    height: calc(100vh - 80px);  /* 动态计算高度，减去标题高度 */
+    width: 100%;
+
+    display: flex;                /* 使用 Flexbox 布局 */
+    flex-direction: row;          /* 子元素水平排列（行方向） */
+    flex-wrap: nowrap;            /* 当子元素宽度超出时，不允许换行排列 */
+    align-content: flex-start;    /* 当多行时，内容在容器的顶部对齐 */
+    justify-content: flex-start;  /* 子元素在水平方向上左边对齐 */
+    align-items: flex-start;      /* 子元素在垂直方向上顶部对齐 */
+    
+    /* 设置边距 */
+    gap: 30px;
+    box-sizing: border-box;    /* 包含内边距和边框在元素的总宽度和高度计算中 */
+}
+
+

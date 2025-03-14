@@ -1,0 +1,111 @@
+/* 整体布局 */
+#view_cooccurrence_network {
+    display: flex;
+    flex-direction: column;
+
+    width: 100%;
+    /* background-color: #0070C0; */
+}
+
+
+/* 内容区域整体布局 */
+#content_cooccurrence_network {
+    height: calc(100vh - 80px);  /* 动态计算高度，减去标题高度 */
+    width: 100%;
+
+    display: flex;                /* 使用 Flexbox 布局 */
+    flex-direction: row;          /* 子元素水平排列（行方向） */
+    flex-wrap: nowrap;            /* 当子元素宽度超出时，不允许换行排列 */
+    align-content: flex-start;    /* 当多行时，内容在容器的顶部对齐 */
+    justify-content: flex-start;  /* 子元素在水平方向上左边对齐 */
+    align-items: flex-start;      /* 子元素在垂直方向上顶部对齐 */
+    
+    /* 设置边距 */
+    gap: 30px;
+    box-sizing: border-box;    /* 包含内边距和边框在元素的总宽度和高度计算中 */
+}
+
+
+/* ---------------------------------------------------------------------------- */
+/* 网络分析:边数据 */
+#table_cooccurrence_network_edge {
+    width: 100%;
+
+    padding: 0px 20px;
+    margin: 0px;
+    box-sizing: border-box;
+
+    flex-shrink: 0;
+    
+    /* 不允许换行 */
+    white-space: nowrap;
+}
+
+#table_cooccurrence_network_edge::before,
+#table_cooccurrence_network_edge::after {
+    content: "";
+    display: block;
+    height: 10px;
+    /* 等于你想要的 padding 值 */
+    width: 100%;
+    position: sticky;
+    top: 0;
+    /* 顶部伪元素固定在顶部 */
+    background: #fff;
+    /* 背景色与容器一致 */
+    z-index: 1;
+    /* 确保浮动在内容上 */
+}
+
+#table_cooccurrence_network_edge::after {
+    top: auto;
+    bottom: 0;
+    /* 底部伪元素固定在底部 */
+
+    height: 30px;
+    /* 等于你想要的 padding 值 */
+}
+
+
+
+
+/* ---------------------------------------------------------------------------- */
+/* 网络分析:边数据 */
+#table_cooccurrence_network_node {
+    width: 100%;
+
+    padding: 0px 20px;
+    margin: 0px;
+    box-sizing: border-box;
+
+    flex-shrink: 0;
+    
+    /* 不允许换行 */
+    white-space: nowrap;
+}
+
+#table_cooccurrence_network_node::before,
+#table_cooccurrence_network_node::after {
+    content: "";
+    display: block;
+    height: 10px;
+    /* 等于你想要的 padding 值 */
+    width: 100%;
+    position: sticky;
+    top: 0;
+    /* 顶部伪元素固定在顶部 */
+    background: #fff;
+    /* 背景色与容器一致 */
+    z-index: 1;
+    /* 确保浮动在内容上 */
+}
+
+#table_cooccurrence_network_node::after {
+    top: auto;
+    bottom: 0;
+    /* 底部伪元素固定在底部 */
+
+    height: 30px;
+    /* 等于你想要的 padding 值 */
+}
+

@@ -1,0 +1,116 @@
+/* -------------------------------------- */
+/* 侧边栏 */
+/* 布局 */
+#subBar {
+    display: flex;
+    flex-direction: column;
+
+    width: 15%;        /* 宽度占15% */
+    height: 100vh;     /* 高度 */
+
+    margin: 0px;
+    padding: 10px 20px;           /* 给aside一些内边距 */
+    box-sizing: border-box;       /* 确保 padding 和 border 被包含在高度和宽度中 */
+
+    background-color: #ffffff;
+
+    /* 添加框线和阴影 */
+    box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.04);
+
+}
+
+
+/* amplysis logo */
+.logo {
+    height: 5%;
+    width: 100%;
+
+    font-size: 36px;  /* 字号 */
+    font-weight: bold;    /* 加粗 */
+
+    display: flex;             /* 使用 Flexbox 布局 */
+    justify-content: center;   /* 水平居中 */
+    align-items: center;       /* 垂直居中 */
+
+    color: black;  /* 字体颜色 */
+    /* background-color: #0070C0;  */
+
+    /* border-radius: 16px;  */
+
+    padding: 0px 0px;  /* 添加内边距 */
+    margin: 5px 0px;
+    box-sizing: border-box;
+}
+
+
+/* 标题 */
+#wrap .menu_h3 {
+    font-weight: bold;
+    font-size: xx-small;
+
+    /* 外边距：上右下左（顺时针） */
+    margin: 30px 10px 5px 10px;
+
+    text-align: left;
+    /* 左对齐，默认就是左对齐 */
+}
+
+
+/* 按钮模块 */
+#wrap .menu_group {
+    display: flex;
+    flex-direction: column;  /* 垂直排列按钮 */
+    align-items: center;     /* 居中对齐按钮 */
+}
+
+
+/* 按钮容器:a标签 */
+#wrap .button_a {
+    width: 100%;
+}
+
+/* 按钮 */
+#wrap .button {
+    width: 100%;
+    height: 32px;
+    font-size: 15px;
+
+    margin: 0px 0px 2px 0px;    /* 外边距：上下 左右*/
+    padding: 0px 10px;          /* 添加一些内边距 */
+
+    background-color: transparent; /* 按钮背景色 */
+    color: rgb(70, 70, 70);      /* 字体颜色 */
+    
+    text-align: left;            /* 左对齐 */
+    border: none;                /* 去掉默认边框 */
+    border-radius: 12px;         /* 圆角按钮 */
+    cursor: pointer;             /* 鼠标悬停时显示手势 */
+    outline: none;               /* 去除点击时默认的边框效果 */
+    transition: background-color 0.2s ease, transform 0.3s ease; /* 添加过渡效果，包括缩放和背景颜色 */
+}
+
+
+/* 鼠标悬停时按钮的样式 */
+#wrap .button:hover {
+    background-color: rgb(235, 235, 235); /* 鼠标悬停时的按钮颜色 */
+    color: black;              /* 鼠标悬停时的字体颜色 */
+    /* font-weight: bold; */
+    transform: scale(1.05);      /* 悬停时微微放大按钮 */
+}
+
+
+/* 按钮被点击时的样式 */
+#wrap .button:active {
+    background-color: rgb(210, 210, 210); /* 点击时背景颜色 */
+    color: black;              /* 点击时字体颜色 */
+    transform: scale(0.98);      /* 点击时缩小按钮，增加点击感 */
+}
+
+
+/* 按钮被选中时 */
+.menu_group button#action {
+    font-weight: bold;
+    color: black;
+    background-color: rgb(235, 235, 235)
+}
+

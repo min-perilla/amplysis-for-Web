@@ -1,0 +1,48 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+
+body, html, p, h2, h3 {
+    margin: 0; /* 移除 body、段落 (p) 和标题 (h2, h3) 的默认外边距，防止元素间产生不必要的留白 */
+    padding: 0;
+}
+
+body, html {
+    height: 100%; 
+}
+
+button, input {
+    padding: 0; /* 移除按钮和输入框的内边距，确保样式的一致性 */
+    box-sizing: border-box; /* 使元素的宽度和高度包含内边距和边框，避免内容溢出 */
+    outline: none; /* 移除按钮和输入框在点击时的默认轮廓（outline） */
+}
+
+button {
+    border: none; /* 移除按钮的默认边框 */
+    background: none; /* 去除按钮的默认背景 */
+    cursor: pointer; /* 将按钮的鼠标指针变为小手形状，指示其可点击 */
+}
+
+label, input {
+    vertical-align: middle; /* 使 label 和输入框在同一行中垂直居中对齐 */
+}
+
+ul {
+    margin: 0; /* 移除 ul 的默认外边距 */
+    padding: 0; /* 移除 ul 的默认内边距 */
+    list-style: none; /* 移除列表项前的默认项目符号 */
+}
+
+a {
+    text-decoration: none; /* 移除链接的下划线 */
+    -webkit-user-drag: none; /* 对于 WebKit 浏览器 */
+    
+}
+
+table {
+    border-collapse: collapse; /* 合并表格的边框，避免单元格之间出现多余的空隙 */
+}
+

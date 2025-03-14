@@ -1,0 +1,72 @@
+.plot_container {
+    display: grid;
+    place-items: center; /* 上下左右居中 */
+    height: 98%;
+    max-width: 76%;
+    min-width: 76%;
+    padding: 20px 20px;
+    margin: 0px;
+    box-sizing: border-box;
+    border-radius: 12px;
+
+    /* 添加框线和阴影 */
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.04);
+    background-color: rgb(255, 255, 255);
+}
+
+.plot_container svg {
+    max-width: 100%;
+    max-height: 100%;
+    width: auto;
+    height: auto;
+    display: block;
+}
+
+
+
+/* -------------------------------------------------------- */
+/* 带有导航栏的绘图容器的父容器 */
+.plot_container_nav {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    width: 100%;
+    border-radius: 12px;
+    box-sizing: border-box;
+    justify-content: space-between;
+    align-items: center;
+}
+
+
+/* 带有导航栏的绘图容器 */
+.plot_container_nav_items {
+    display: grid;
+    place-items: center; /* 上下左右居中 */
+    
+    height: 92%;
+    width: 100%;
+
+    padding: 0px 20px;
+    margin: 20px 0px 0px 0px;
+
+    /* background-color: aqua; */
+}
+
+/* 使用 .active 类来显示对应页面 */
+.plot_container_nav_items.active {
+    display: grid;
+}
+
+/* 默认情况下，所有页面都是隐藏的 */
+.plot_page {
+    display: none;
+}
+
+/* 显示 SVG 的样式 */
+.plot_container_nav_items svg {
+    max-width: 100%;  /* 确保 SVG 不会超出容器 */
+    max-height: 100%; /* 限制最大高度 */
+    width: auto;  /* 让宽度自适应 */
+    height: auto; /* 让高度自适应 */
+    display: block;
+}

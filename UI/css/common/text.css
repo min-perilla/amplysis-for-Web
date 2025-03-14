@@ -1,0 +1,14 @@
+/* 次要文本 */
+.secondary_text_1 {
+    color: rgb(140, 140, 140);
+}
+
+.secondary_text_2 {
+    color: rgb(0, 112, 192);
+}
+
+/* 次要提示文本 */
+.secondary_text_small_1 {
+    color: rgb(140, 140, 140);
+    font-size: smaller;
+}

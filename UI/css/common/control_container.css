@@ -1,0 +1,805 @@
+/* 控制菜单容器 */
+.control_container {
+    width: 100%;
+    height: 98%;
+
+    display: flex;
+    flex-direction: column;
+
+    /* 超出容器的内容将会被隐藏 */
+    overflow-x: hidden;
+    overflow-y: auto;
+
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+
+    /* 添加阴影 */
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.04);
+
+    border-radius: 12px;
+    background-color: #ffffff;
+}
+
+/* 控制菜单标题容器 */
+.control_menu_title {
+    display: flex;
+    flex-direction: row;
+
+    /* 分散对齐 */
+    justify-content: space-between;
+
+    /* 上下居中 */
+    align-items: center;
+
+    margin: 0;
+    padding: 10px 20px;
+    box-sizing: border-box;
+    background-color: rgb(235, 235, 235);
+}
+
+
+/* ----------------------------------------------- */
+/* 绘图按钮 */
+.button_plot {
+    width: 30%;
+    height: 28px;
+
+    /* 字体 */
+    font-size: medium;
+    font-weight: bold;
+
+    /* 边距 */
+    padding: 0px 0px;
+    margin: 0px;
+    box-sizing: border-box;
+
+    border-radius: 12px;
+    background-color: rgb(255, 255, 255);
+
+    /* 添加动画效果 */
+    transition: background-color 0.2s ease, transform 0.3s ease;
+    /* 添加过渡效果，包括缩放和背景颜色 */
+}
+
+/* 鼠标悬停时按钮的样式 */
+.button_plot:hover {
+    /* 鼠标悬停时的按钮颜色 */
+    background-color: rgb(250, 250, 250);
+
+    /* 鼠标悬停时的字体颜色 */
+    color: black;
+
+    /* 悬停时微微放大按钮 */
+    transform: scale(1.05);
+}
+
+/* 按钮被点击时的样式 */
+.button_plot:active {
+    /* 点击时背景颜色 */
+    background-color: rgb(210, 210, 210);
+
+    /* 点击时字体颜色 */
+    color: black;
+
+    /* 点击时缩小按钮，增加点击感 */
+    transform: scale(0.98);
+}
+
+
+
+
+/* ----------------------------------------------- */
+/* 属性控制面板容器布局 */
+.control_menu {
+    width: 100%;
+    height: 100%;
+
+    display: flex;
+    flex-direction: row;
+
+    overflow-x: hidden;
+    overflow-y: auto;
+
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+
+
+/* 侧边按钮容器 */
+.control_nav_container {
+    height: 100%;
+    width: 15%;
+
+    display: flex;
+    flex-direction: column;
+
+    /* 顶部对齐 */
+    justify-content: flex-start;
+
+    /* 自动拉伸以占据父容器的全部宽度。 */
+    align-items: stretch;
+
+    /* 间距 */
+    gap: 0px;
+    margin: 0;
+    padding: 0px 0px;
+    box-sizing: border-box;
+
+    background-color: rgb(235, 235, 235);
+}
+
+
+/* 按钮样式 */
+.control_nav_button {
+    height: 38px;
+    width: 100%;
+    /* border: 1px solid gray; */
+
+    font-size: small;
+
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+
+    color: rgb(70, 70, 70);
+    background-color: rgb(235, 235, 235);
+
+    /* 添加过渡效果，包括缩放和背景颜色 */
+    transition: background-color 0.2s ease;
+}
+
+
+/* 鼠标悬停时按钮的样式 */
+.control_nav_button:hover {
+    /* 鼠标悬停时的按钮颜色 */
+    background-color: rgb(245, 245, 245);
+
+    /* 鼠标悬停时的字体颜色 */
+    color: black;
+    font-weight: bold;
+}
+
+
+/* 按钮被点击时的样式 */
+.control_nav_button:active {
+    /* 点击时背景颜色 */
+    background-color: rgb(220, 220, 220);
+
+    /* 点击时字体颜色 */
+    color: black;
+}
+
+
+/* 按钮被选中时 */
+.control_nav_button#action {
+    font-weight: bold;
+    color: black;
+    background-color: rgb(255, 255, 255)
+}
+
+
+
+
+
+/* ---------------------------------------------------- */
+/* 具体选项容器容器 */
+.control_items_container {
+    display: flex;
+    flex-direction: row;
+
+    overflow-x: hidden;
+    overflow-y: auto;
+
+    width: 100%;
+    height: 100%;
+}
+
+
+
+/* 具体选项 */
+.control_items {
+    display: flex;
+    flex-direction: column;
+
+    /* 不收缩 */
+    flex-shrink: 0;
+    align-items: center;
+
+    width: 100%;
+    height: 100%;
+
+    margin: 0px 0px;
+    padding: 15px 0px;
+    gap: 20px;
+    box-sizing: border-box;
+
+    /* background-color: #90a7b8; */
+}
+
+/* 选项文本标签 */
+.control_item_label {
+    /* 顶部对齐 */
+    vertical-align: top;
+}
+
+
+/* 控制卡片容器 */
+.control_card_container {
+    display: flex;
+    flex-direction: column;
+
+    width: 90%;
+
+    border-radius: 12px;
+    background-color: rgb(240, 240, 240);
+
+    /* 阴影 */
+    /* box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.1); */
+    /* border: 0.5px solid rgba(0, 0, 0, 0.02); */
+}
+
+/* 控制卡片标题 */
+.control_card_title {
+    /* 字体 */
+    font-size: medium;
+    font-weight: bold;
+    text-align: center;
+    color: #ffffff;
+
+    /* 间距 */
+    padding: 5px 20px;
+
+    /* 背景 */
+    /* background-color: rgb(0, 112, 192); */
+    background-color: rgb(0, 112, 192);
+    border-top-left-radius: 12px;
+    border-top-right-radius: 12px;
+}
+
+
+/* 控制卡片参数设置容器 */
+/* 让表格占满父容器宽度 */
+.control_card_box {
+    height: 100%;
+    overflow-y: auto;
+
+    font-size: small;
+
+    padding: 18px 20px;
+    /* padding-bottom: 15px; */
+    margin: 0px;
+    box-sizing: border-box;
+}
+
+.control_card_box table {
+    width: 100%;
+
+    /* 可选：消除表格单元格之间的空隙 */
+    border-collapse: collapse;
+}
+
+
+/* 控制第一列和第二列的对齐方式 */
+.control_item_box td:first-child {
+    /* 第一列占50% */
+    width: 40%;
+
+    /* 第一列右对齐 */
+    text-align: right;
+
+    /* 顶部对齐 */
+    /* vertical-align: center; */
+
+    /* 增加右边距，给表单控件留空间 */
+    padding-right: 5px;
+}
+
+/* 第二列 */
+.control_item_box td:last-child {
+    /* 第一列占50% */
+    width: 60%;
+
+    /* 第二列左对齐 */
+    text-align: left;
+
+    /* 顶部对齐 */
+    vertical-align: center;
+
+    /* 增加左边距，给表单控件留空间 */
+    padding-left: 5px;
+}
+
+/* 表格各行 */
+.control_item_box td {
+    padding: 10px 0px;
+}
+
+
+/* 分组信息选择框 */
+.selection_box {
+    width: 80%;
+}
+
+
+/* 数字输入框 */
+.input_control {
+    width: 80%;
+    padding-left: 3px;
+    padding-right: 3px;
+}
+
+
+
+
+/* ------------------------------------------------ */
+/* 配色选项卡 */
+/* 配色容器 */
+/* 控制卡片的容器 */
+.color_box {
+    display: flex;
+    flex-direction: column;
+
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    gap: 10px;
+}
+
+/* 颜色选择器容器 */
+.color_select_container {
+    display: flex;
+    flex-direction: row;
+
+    /* 两端对齐 */
+    justify-content: space-between;
+
+    /* 上下对齐 */
+    align-items: center;
+}
+
+
+
+/* 控制卡片容器下面的 input[type='color'] 样式 */
+/* 颜色选择器 */
+.control_card_container input[type='color'] {
+    width: 80%;
+    height: 24px;
+    padding: 0px 3px;
+}
+
+
+
+
+
+/* 控制面板按钮 */
+.button_control {
+    width: 30%;
+    height: 24px;
+
+    /* 字体 */
+    /* font-size: x-small; */
+
+    /* 边距 */
+    padding: 0px 0px;
+    margin: 0px;
+    box-sizing: border-box;
+
+    border-radius: 10px;
+    background-color: rgb(255, 255, 255);
+
+    /* 设置边框 */
+    border: 1px solid rgb(220, 220, 220);
+
+    /* 添加动画效果 */
+    /* 添加过渡效果，包括缩放和背景颜色 */
+    transition: background-color 0.2s ease, transform 0.3s ease;
+
+}
+
+/* 鼠标悬停时按钮的样式 */
+.button_control:hover {
+    /* 鼠标悬停时的按钮颜色 */
+    background-color: rgb(250, 250, 250);
+
+    /* 鼠标悬停时的字体颜色 */
+    color: black;
+
+    /* 悬停时微微放大按钮 */
+    transform: scale(1.05);
+}
+
+/* 按钮被点击时的样式 */
+.button_control:active {
+    /* 点击时背景颜色 */
+    background-color: rgb(210, 210, 210);
+
+    /* 点击时字体颜色 */
+    color: black;
+
+    /* 点击时缩小按钮，增加点击感 */
+    transform: scale(0.98);
+
+}
+
+
+/* ------------------------- */
+/* 随机生成颜色容器 */
+.colorGenerator_container {
+    display: flex;
+    flex-direction: row;
+
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    gap: 5px;
+
+    /* 两端对齐 */
+    justify-content: space-between;
+
+    /* 上下对齐 */
+    align-items: center;
+}
+
+
+/* 数量输入框容器 */
+.colorNumber_container {
+    display: flex;
+    flex-direction: row;
+
+    width: 64%;
+
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    align-items: center;
+    /* 上下对齐 */
+}
+
+/* 数量文本 */
+.colorNumber_container span {
+    width: 25%;
+}
+
+/* 数量输入框 */
+.colorNumber_container input[type='number'] {
+    width: 75%;
+    padding-left: 3px;
+    padding-right: 3px;
+}
+
+
+
+/* ------------------------------------------------------- */
+/* 颜色文本框容器 */
+.color_container {
+    width: 100%;
+    display: flex;
+}
+
+/* 颜色文本框，显示最终的颜色值 */
+.textarea_color {
+    width: 100%;
+    height: 150px;
+
+    padding: 10px 10px;
+    margin: 5px 0px 5px 0px;
+    box-sizing: border-box;
+}
+
+
+
+/* ------------------------------------------------- */
+/* 自定义排序容器 */
+.custom_order_container {
+    display: flex;
+    flex-direction: column;
+
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    gap: 10px;
+}
+
+/* 文本区域 */
+.textarea_custom_order {
+    width: 100%;
+    height: 100px;
+
+    padding: 10px 10px;
+    margin: 0px;
+    box-sizing: border-box;
+}
+
+
+
+/* 复选框容器 */
+.checkbox_container {
+    display: flex;
+    flex-direction: column;
+
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+    gap: 5px;
+}
+
+
+
+
+
+/* ----------------------------------------------- */
+/* 控制菜单组 */
+/* 容器 */
+.control_group_container {
+    width: 100%;
+    height: 98%;
+
+    display: flex;
+    flex-direction: row;
+
+    /* 超出容器的内容将会被隐藏 */
+    overflow-x: hidden;
+    overflow-y: hidden;
+
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+
+    /* 添加阴影 */
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.04);
+
+    border-radius: 12px;
+    background-color: #ffffff;
+}
+
+
+/* 控制菜单组各子项菜单容器 */
+.control_group_items_container {
+    width: 100%;
+    height: 100%;
+
+    display: flex;
+    flex-direction: column;
+
+    /* 不收缩 */
+    flex-shrink: 0;
+
+    /* 超出容器的内容将会被隐藏 */
+    overflow-x: hidden;
+    overflow-y: auto;
+
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+
+    /* 添加阴影 */
+    /* box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.04);
+
+    border-radius: 12px;
+    background-color: #ffffff; */
+}
+
+
+
+/* 需要解释文本的选项容器(采用flex排列) */
+.flex_option_box {
+    display: flex;
+    flex-direction: column;
+
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+    gap: 5px;
+}
+
+/* 导出文件选项容器(采用flex排列) */
+.flex_option_exportFile_box {
+    display: flex;
+    flex-direction: column;
+
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+    gap: 10px;
+}
+
+/* 导出文件按钮 */
+.button_exportFile {
+    width: 80%;
+    height: 24px;
+
+    /* 边距 */
+    padding: 0px 0px;
+    margin: 0px;
+    box-sizing: border-box;
+
+    border-radius: 12px;
+    background-color: rgb(255, 255, 255);
+
+    /* 设置边框 */
+    border: 1px solid rgba(220, 220, 220, 0.65);
+
+    /* 添加动画效果 */
+    transition: background-color 0.2s ease, transform 0.3s ease;
+    /* 添加过渡效果，包括缩放和背景颜色 */
+}
+
+/* 导出文件按钮样式2 */
+.button_exportFile2 {
+    width: 80%;
+    height: 30px;
+
+    /* 边距 */
+    padding: 0px 0px;
+    margin: 0px;
+    box-sizing: border-box;
+
+    border-radius: 12px;
+    background-color: rgb(255, 255, 255);
+
+    /* 设置边框 */
+    border: 1px solid rgba(220, 220, 220, 0.65);
+
+    /* 添加动画效果 */
+    transition: background-color 0.2s ease, transform 0.3s ease;
+    /* 添加过渡效果，包括缩放和背景颜色 */
+}
+
+
+
+/* 鼠标悬停时按钮的样式 */
+.button_exportFile:hover,
+.button_exportFile2:hover {
+    /* 鼠标悬停时的按钮颜色 */
+    background-color: rgb(250, 250, 250);
+
+    /* 鼠标悬停时的字体颜色 */
+    color: black;
+
+    /* 悬停时微微放大按钮 */
+    transform: scale(1.05);
+}
+
+/* 按钮被点击时的样式 */
+.button_exportFile:active,
+.button_exportFile2:active {
+    /* 点击时背景颜色 */
+    background-color: rgb(210, 210, 210);
+
+    /* 点击时字体颜色 */
+    color: black;
+
+    /* 点击时缩小按钮，增加点击感 */
+    transform: scale(0.98);
+}
+
+
+
+
+/* textarea */
+/* 数据分列新列名 */
+.textarea_colName {
+    width: 80%;
+    height: 150px;
+
+    padding: 10px 10px;
+    margin: 0px;
+    box-sizing: border-box;
+}
+
+
+
+/* 局部小表格容器 */
+/*  */
+.smallTable_container {
+    display: flex;
+    flex-direction: column;
+
+    width: 100%;
+
+    padding: 0px;
+    padding-top: 10px;
+    margin: 0px;
+    gap: 0px;
+    box-sizing: border-box;
+}
+
+
+/* 控制第一列和第二列的对齐方式 */
+.smallTable_container td:first-child {
+    /* 第一列占比 */
+    width: 40%;
+
+    /* 第一列右对齐 */
+    text-align: right;
+
+    /* 顶部对齐 */
+    vertical-align: top;
+
+    /* 增加右边距，给表单控件留空间 */
+    padding-right: 5px;
+}
+
+/* 第二列 */
+.smallTable_container td:last-child {
+    /* 第二列占比 */
+    width: 60%;
+
+    /* 第二列左对齐 */
+    text-align: left;
+
+    /* 增加左边距，给表单控件留空间 */
+    padding-left: 5px;
+}
+
+/* 表格各行 */
+.smallTable_container td {
+    padding: 10px 0px;
+}
+
+
+/* ----------------------------------------------------------------- */
+/* 重置按钮 */
+/* 导出文件按钮 */
+.button_resetting {
+
+    display: flex;
+    /* 启用 flex 布局 */
+    align-items: center;
+    /* 垂直居中 */
+    justify-content: center;
+    /* 水平居中 */
+
+
+    width: 60%;
+    height: 20px;
+
+    /* 边距 */
+    padding: 0px 0px;
+    margin: 0px;
+    box-sizing: border-box;
+
+    border-radius: 12px;
+    background-color: rgb(255, 255, 255);
+
+    /* 设置边框 */
+    border: 1px solid rgba(220, 220, 220, 0.65);
+
+
+    /* 添加动画效果 */
+    transition: background-color 0.2s ease, transform 0.3s ease;
+    /* 添加过渡效果，包括缩放和背景颜色 */
+}
+
+/* 鼠标悬停时按钮的样式 */
+.button_resetting:hover {
+    /* 鼠标悬停时的按钮颜色 */
+    background-color: rgb(250, 250, 250);
+
+    /* 鼠标悬停时的字体颜色 */
+    color: black;
+
+    /* 悬停时微微放大按钮 */
+    transform: scale(1.05);
+}
+
+/* 按钮被点击时的样式 */
+.button_resetting:active {
+    /* 点击时背景颜色 */
+    background-color: rgb(210, 210, 210);
+
+    /* 点击时字体颜色 */
+    color: black;
+
+    /* 点击时缩小按钮，增加点击感 */
+    transform: scale(0.98);
+}
+
+
+
+.button_icon {
+    height: 12px;
+}

@@ -1,0 +1,152 @@
+#wrap {
+    height: 100vh;  /* vh vw: 可视区的高度和宽度 */
+    display: flex;  /* 弹性盒模型 */
+    flex-direction: column;  /* 竖向排列 */
+    align-items: center;     /* 垂直方向对齐 */
+    justify-content: center; /* 水平方向对齐 */
+}
+
+
+/* amplysis logo */
+.logo {    
+    font-size: xx-large;          /* 字号 */
+    font-weight: bold;            /* 加粗 */
+
+    text-align: center;
+
+    color: #ffffff;             /* 字体颜色 */
+    background-color: #0070C0;  /* 背景颜色 */
+
+    border-radius: 16px;          /* 圆角 */
+    padding: 10px 16px 14px 16px; /* 添加内边距 */
+    margin-bottom: 30px;          /* 下边距 */
+}
+
+
+/* 欢迎回来 */
+.welcome {
+    color: #2d333a;
+    font-size: xx-large;
+    font-weight: bold;
+
+    margin-bottom: 30px;
+    box-sizing: border-box;  /* 确保 padding 和 border 被包含在高度和宽度中 */
+}
+
+
+
+#wrap p {
+    display: flex;
+    margin-bottom: 30px;
+    box-sizing: border-box;  /* 确保 padding 和 border 被包含在高度和宽度中 */
+
+    font-size: medium;
+    
+    border-radius: 16px;
+
+    line-height: 50px;
+    position: relative;  /* 相对定位 */
+}
+
+
+/* 输入框 */
+#wrap input {
+    width: 330px;
+    height: 50px;
+
+    font-size: medium;
+    padding: 0px 20px;
+
+    border: none;
+    border-radius: 16px;
+    
+    background-color: #f4f4f4;
+}
+
+
+/* 输入框提示词 */
+input::placeholder {
+    color: #A6A6A6;
+    font-size: medium;
+}
+
+
+/* 输入框错误提示 */
+#wrap .tips {
+     position: absolute;  /* 绝对定位 */
+     top: 0;
+     right: 20px;
+
+     font-size: medium;
+     color: red;
+}
+
+
+/* 按钮 */
+#wrap button {
+    height: 50px;
+    margin: 0px 10px;
+
+    font-size: medium;
+
+}
+
+
+/* 登录按钮 */
+#wrap #login {
+    width: 330px;
+
+    background: #0070c0;
+    border-radius: 16px;
+    color: #ffffff;
+
+    transition: background-color 0.2s ease, transform 0.3s ease; /* 添加过渡效果，包括缩放和背景颜色 */
+}
+
+/* 登录按钮：鼠标悬停时按钮的样式 */
+#wrap #login:hover {
+    background: #0065ad;       /* 悬停时背景颜色 */
+    color: #ffffff;            /* 悬停时字体颜色 */
+    transform: scale(1.02);      /* 悬停时缩小按钮，增加点击感 */
+}
+
+/* 登录按钮：按钮被点击时的样式 */
+#wrap #login:active {
+    background-color: #005c9e; /* 点击时背景颜色 */
+    color: #ffffff;            /* 点击时字体颜色 */
+    transform: scale(0.98);      /* 点击时缩小按钮，增加点击感 */
+}
+
+
+
+
+/* 注册按钮模块 */
+#register {
+    height: 40px;
+
+    margin: 10px 0px;
+
+    display: flex;
+    flex-direction: row;
+    align-items: center;     /* 垂直方向对齐 */
+    justify-content: center; /* 水平方向对齐 */
+}
+
+/* 注册按钮 */
+#wrap #button_register {
+    color: #0070c0;
+
+    transition: background-color 0.2s ease, transform 0.3s ease; /* 添加过渡效果，包括缩放和背景颜色 */
+}
+
+/* 注册按钮：鼠标悬停时 */
+#wrap #button_register:hover {
+    color: #0065ad;            /* 悬停时字体颜色 */
+
+    font-weight: bold;
+}
+
+/* 注册按钮：鼠标点击时 */
+#wrap #button_register:active {
+    color: #003f6c;            /* 点击时字体颜色 */
+}

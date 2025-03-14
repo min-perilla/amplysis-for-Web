@@ -1,0 +1,407 @@
+<!-- ------------------------------------------------------ -->
+<!-- 暂时移除 -->
+<!-- 弦图模块 -->
+<div id="view_chord_diagram" class="view">
+
+    <!-- 顶部标题 -->
+    <div class="headerTitle">
+        <h1>弦图</h1>
+    </div>
+
+    <!-- 内容区域 -->
+    <div id="content_chord_diagram">
+
+        <!-- 绘图区域 -->
+        <div class="plot_container" id="plot_chord_diagram"></div>
+
+        <!-- 控制菜单 -->
+        <div class="control_container">
+            <div class="control_menu_title">
+                <h2>参数设置</h2>
+                <button class="button_plot" id="plot_button_chord_diagram">绘图</button>
+            </div>
+
+
+            <!-- 属性控制面板 -->
+            <div class="control_menu">
+                <!-- 侧边按钮 -->
+                <div class="control_nav_container">
+                    <a href="#" data-target="chord_diagram_control_groups"><button
+                            class="control_nav_button">分组</button></a>
+                    <a href="#" data-target="chord_diagram_control_colors"><button
+                            class="control_nav_button">配色</button></a>
+                    <a href="#" data-target="chord_diagram_control_attribute"><button
+                            class="control_nav_button">属性</button></a>
+                    <a href="#" data-target="chord_diagram_control_canvas"><button
+                            class="control_nav_button">画布</button></a>
+                    <a href="#" data-target="chord_diagram_control_export"><button
+                            class="control_nav_button">导出</button></a>
+                </div>
+
+
+                <!-- 具体选项容器 -->
+                <div class="control_items_container" id="chord_diagram_control_items">
+
+                    <!-- 分组 -->
+                    <div class="control_items page" id="chord_diagram_control_groups">
+
+                        <!-- 控制卡片 -->
+                        <div class="control_card_container">
+
+                            <!-- 标题 -->
+                            <div class="control_card_title">实验分组</div>
+
+                            <!-- 具体参数设置 -->
+                            <div class="control_card_box">
+                                <table>
+                                    <tbody>
+
+                                        <!-- 分组 1 -->
+                                        <tr class="control_item_box">
+                                            <td class="control_item_label">分组 1</td>
+                                            <td>
+                                                <select class="selection_box groups_select plot_infomation"
+                                                    id="chord_diagram_groupInformation1"></select>
+                                            </td>
+                                        </tr>
+
+                                        <!-- 分组 2 -->
+                                        <tr class="control_item_box">
+                                            <td class="control_item_label">分组 2</td>
+                                            <td>
+                                                <select class="selection_box groups_select2 plot_infomation"
+                                                    id="chord_diagram_groupInformation2"></select>
+                                            </td>
+                                        </tr>
+
+                                    </tbody>
+                                </table>
+                            </div>
+
+                        </div>
+
+
+
+                        <!-- 控制卡片 -->
+                        <div class="control_card_container">
+
+                            <!-- 标题 -->
+                            <div class="control_card_title">平行样</div>
+
+                            <!-- 具体参数设置 -->
+                            <div class="control_card_box">
+                                <table>
+                                    <tbody>
+
+                                        <!-- 平行样 -->
+                                        <tr class="control_item_box">
+                                            <td class="control_item_label">平行样标识</td>
+                                            <td>
+                                                <select class="selection_box parallel_select plot_infomation"
+                                                    id="chord_diagram_parallelInformation"></select>
+                                            </td>
+                                        </tr>
+
+                                        <!-- 平行样处理方法 -->
+                                        <tr class="control_item_box">
+                                            <td class="control_item_label">处理方法</td>
+                                            <td>
+                                                <select class="selection_box parallelMethods plot_infomation"
+                                                    id="chord_diagram_parallelMethods"></select>
+                                            </td>
+                                        </tr>
+
+                                    </tbody>
+                                </table>
+                            </div>
+
+                        </div>
+
+
+
+                        <!-- 控制卡片 -->
+                        <div class="control_card_container">
+
+                            <!-- 标题 -->
+                            <div class="control_card_title">分类</div>
+
+                            <!-- 具体参数设置 -->
+                            <div class="control_card_box">
+                                <table>
+                                    <tbody>
+
+                                        <!-- 分类等级 -->
+                                        <tr class="control_item_box">
+                                            <td class="control_item_label">分类等级</td>
+                                            <td>
+                                                <select class="selection_box select_tax_class plot_infomation"
+                                                    id="chord_diagram_classification"></select>
+                                            </td>
+                                        </tr>
+
+                                        <!-- 保留前 n 个物种 -->
+                                        <tr class="control_item_box">
+                                            <td class="control_item_label">物种数量</td>
+                                            <td>
+
+                                                <input type="number" class="input_control plot_infomation"
+                                                    id="chord_diagram_speciesCountInput" value="8" min="1" max="30"
+                                                    oninput="updateInputValue(this.id, 1, 30)">
+
+                                            </td>
+                                        </tr>
+
+                                    </tbody>
+                                </table>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <!-- 配色 -->
+                    <div class="control_items page" id="chord_diagram_control_colors">
+
+                        <!-- 控制卡片 -->
+                        <div class="control_card_container">
+
+                            <!-- 标题 -->
+                            <div class="control_card_title">配色方案</div>
+
+                            <!-- 具体参数设置 -->
+                            <div class="control_card_box">
+                                <div class="color_box">
+
+                                    <!-- 颜色选择器 -->
+                                    <div class="color_select_container">
+                                        <input type="color" id="chord_diagram_colorSelect" value="#0070c0">
+                                        <button class="button_control" id="chord_diagram_colorAddButton">添加</button>
+                                    </div>
+
+                                    <p class="secondary_text_1">或随机生成颜色：</p>
+
+                                    <!-- 随机生成颜色 -->
+                                    <div class="colorGenerator_container">
+                                        <!-- 随机生成颜色的数量输入框 -->
+                                        <div class="colorNumber_container">
+                                            <span>数量</span>
+                                            <input type="number" id="chord_diagram_colorNumber" min="1" value="8"
+                                                placeholder="输入数量" , oninput="updateInputValue(this.id, 1, 30)">
+                                        </div>
+
+                                        <!-- 生成按钮 -->
+                                        <button class="button_control"
+                                            id="chord_diagram_colorGeneratorButton">生成</button>
+                                    </div>
+
+
+
+                                    <!-- 颜色文本框，显示最终的颜色值 -->
+                                    <div class="color_container">
+                                        <textarea class="textarea textarea_color plot_infomation"
+                                            id="chord_diagram_colorText"></textarea>
+                                    </div>
+
+                                </div>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- 属性 -->
+                    <div class="control_items page" id="chord_diagram_control_attribute">
+
+                        <!-- 控制卡片 -->
+                        <div class="control_card_container">
+
+                            <!-- 标题 -->
+                            <div class="control_card_title">图</div>
+
+                            <!-- 具体参数设置 -->
+                            <div class="control_card_box">
+                                <table>
+                                    <tbody>
+
+                                        <!-- 刻度大小 -->
+                                        <tr class="control_item_box">
+                                            <td class="control_item_label">刻度大小</td>
+                                            <td>
+                                                <input type="number" class="input_control plot_infomation"
+                                                    id="chord_diagram_scaleSize" value="0.8" step="0.1"
+                                                    oninput="updateInputValue(this.id, 0.1, 3)">
+                                            </td>
+                                        </tr>
+
+                                        <!-- 标签大小 -->
+                                        <tr class="control_item_box">
+                                            <td class="control_item_label">标签大小</td>
+                                            <td>
+                                                <input type="number" class="input_control plot_infomation"
+                                                    id="chord_diagram_labelSize" value="1" step="0.1"
+                                                    oninput="updateInputValue(this.id, 0.1, 3)">
+                                            </td>
+                                        </tr>
+
+
+                                        <!-- 标签偏移高度 -->
+                                        <tr class="control_item_box">
+                                            <td class="control_item_label">标签偏移高度</td>
+                                            <td>
+                                                <input type="number" class="input_control plot_infomation"
+                                                    id="chord_diagram_labelYOffset" value="0.35" step="0.1"
+                                                    oninput="updateInputValue(this.id, 0.1, 1)">
+                                            </td>
+                                        </tr>
+
+                                    </tbody>
+                                </table>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+
+                    <!-- 画布 -->
+                    <div class="control_items page" id="chord_diagram_control_canvas">
+
+                        <!-- 控制卡片 -->
+                        <div class="control_card_container">
+
+                            <!-- 标题 -->
+                            <div class="control_card_title">画布</div>
+
+                            <!-- 具体参数设置 -->
+                            <div class="control_card_box">
+                                <table>
+                                    <tbody>
+
+                                        <!-- 图像宽度 -->
+                                        <tr class="control_item_box">
+                                            <td class="control_item_label">图像宽度</td>
+                                            <td>
+                                                <input type="number" class="input_control plot_infomation"
+                                                    id="chord_diagram_canvasWidth" value="16"
+                                                    oninput="updateInputValue(this.id, 1, 64)">
+                                            </td>
+                                        </tr>
+
+                                        <!-- 图像高度 -->
+                                        <tr class="control_item_box">
+                                            <td class="control_item_label">图像高度</td>
+                                            <td>
+                                                <input type="number" class="input_control plot_infomation"
+                                                    id="chord_diagram_canvasHeight" value="9"
+                                                    oninput="updateInputValue(this.id, 1, 64)">
+                                            </td>
+                                        </tr>
+
+                                    </tbody>
+                                </table>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <!-- 导出 -->
+                    <div class="control_items page" id="chord_diagram_control_export">
+
+                        <!-- 控制卡片 -->
+                        <div class="control_card_container">
+
+                            <!-- 标题 -->
+                            <div class="control_card_title">导出</div>
+
+                            <!-- 具体参数设置 -->
+                            <div class="control_card_box">
+                                <table>
+                                    <tbody>
+
+                                        <!-- 文件名称 -->
+                                        <tr class="control_item_box">
+                                            <td class="control_item_label">名称</td>
+                                            <td>
+                                                <input type="text" class="input_control plot_infomation"
+                                                    id="chord_diagram_exportName" placeholder="输入文件名">
+                                            </td>
+                                        </tr>
+
+                                        <!-- 文件格式 -->
+                                        <tr class="control_item_box">
+                                            <td class="control_item_label" style="vertical-align: top;">文件格式
+                                            </td>
+
+                                            <td>
+                                                <!-- 复选框 -->
+                                                <div class="checkbox_container">
+                                                    <label><input type="checkbox" name="exportFormat" value="png"
+                                                            checked id="chord_diagram_checkbox_PNG"
+                                                            class="plot_infomation"> PNG</label>
+
+                                                    <label><input type="checkbox" name="exportFormat" value="pdf"
+                                                            id="chord_diagram_checkbox_PDF" class="plot_infomation">
+                                                        PDF</label>
+
+                                                    <label><input type="checkbox" name="exportFormat" value="jpg"
+                                                            id="chord_diagram_checkbox_JPG" class="plot_infomation">
+                                                        JPG</label>
+                                                </div>
+                                            </td>
+                                        </tr>
+
+                                        <!-- 图像宽度 -->
+                                        <tr class="control_item_box">
+                                            <td class="control_item_label">图像宽度</td>
+                                            <td>
+                                                <input type="number" class="input_control plot_infomation"
+                                                    id="chord_diagram_exportWidth" value="16"
+                                                    oninput="updateInputValue(this.id, 1, 64)">
+                                            </td>
+                                        </tr>
+
+                                        <!-- 图像高度 -->
+                                        <tr class="control_item_box">
+                                            <td class="control_item_label">图像高度</td>
+                                            <td>
+                                                <input type="number" class="input_control plot_infomation"
+                                                    id="chord_diagram_exportHeight" value="9"
+                                                    oninput="updateInputValue(this.id, 1, 64)">
+                                            </td>
+                                        </tr>
+
+                                        <!-- 导出文件按钮 -->
+                                        <tr class="control_item_box">
+                                            <td colspan="2" style="text-align: center;">
+                                                <!-- 导出按钮 -->
+                                                <button class="button_exportFile2" id="chord_exportFile_button">
+                                                    导出文件
+                                                </button>
+                                            </td>
+                                        </tr>
+
+
+                                    </tbody>
+                                </table>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                </div>
+
+            </div>
+
+
+
+        </div>
+
+
+    </div>
+</div>
+<!-- ------------------------------------------------------ -->
