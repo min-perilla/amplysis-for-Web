@@ -25,8 +25,9 @@
 amplysis-for-web/<br>
 ├── API/ # 存放后端 R 代码<br>
 ├── UI/ # 存放前端代码<br>
-├── start.R # 启动文件<br>
-└── README.md # 项目说明
+├── LICENSE # 许可证<br>
+├── README.md # 项目说明<br>
+└── start.R # 启动文件
 
 4. 打开 **start.R** 并在 RStudio 中运行：  
 - **全选代码（Ctrl+A）**  
