@@ -9,6 +9,8 @@ library(dplyr)
 library(tidyr)
 library(rlang)
 
+# 加载依赖函数
+source("./Rfunction/amplysis/parallel.R")
 
 ##
 # 网络分析
@@ -56,7 +58,7 @@ network = function(
   
   
   ## 格式检查（metadata），处理平行样
-  otu_metadata = amplysis::parallel(
+  otu_metadata = parallel(
     otu = otu, metadata = metadata, id_col = id_col, group = group, 
     parallel_method = parallel_method, digits = 0, metadata_out = T)
   

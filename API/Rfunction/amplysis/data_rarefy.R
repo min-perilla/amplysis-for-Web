@@ -1,18 +1,22 @@
+# 确保 BiocManager 已安装
+if (!requireNamespace("BiocManager", quietly = TRUE)) {
+  install.packages("BiocManager")
+}
+
 # 定义所需的包列表
 required_packages <- c("vegan", "phyloseq")
 
 # 检查并安装未安装的包
 for (pkg in required_packages) {
   if (!requireNamespace(pkg, quietly = TRUE)) {
-    install.packages(pkg)
+    if (pkg %in% rownames(available.packages())) {
+      install.packages(pkg)  # 普通 CRAN 包
+    } else {
+      BiocManager::install(pkg)  # Bioconductor 包
+    }
   }
 }
 
-# 加载所有包
-lapply(required_packages, library, character.only = TRUE)
-
-library(vegan)
-library(phyloseq)
 
 
 # 当使用 phyloseq 包的抽平方法时，且 trimOTUs = T，使用下列方法对齐 tax 和 otu 表格
@@ -69,7 +73,7 @@ align_otu_tax <- function(
 
 # 自定义数据抽平函数
 data_rarefy <- function(file, 
-                        id_col = 0,   # OTU_ID 列是第几列，默认为 0，则表示没有 OTU_ID 列，该数据已经为纯数字
+                        id_col = 1,   # OTU_ID 列是第几列，默认为 0，则表示没有 OTU_ID 列，该数据已经为纯数字
                         
                         method = "vegan",    # 抽平方法
                         

@@ -129,13 +129,16 @@ api_data_rarefy <- function(req) {
     write_file = FALSE      # 是否保存抽平后的文件，默认：TRUE
   )
   
-  cat("data_rarefy()：运行成功!", "\n")
+  cat("data_rarefy()：运行成功！", "\n")
   
 
   # 检查 result 是否为 list
   # 当 tax 非空的时候，result 一定是个 list
+  View(tax)
+  View(result)
   
-  if (!is.null(tax) && is.list(result)) {
+  
+  if (!is.null(tax) && method == "phyloseq") {
     otu_rarefy <- result[[1]]  # 从列表中提取第一个元素
     tax_align <- result[[2]]   # 从列表中提取第二个元素
   } else {
@@ -149,6 +152,9 @@ api_data_rarefy <- function(req) {
   # 对齐 Rep
   if(!is.null(rep) && isTRUE(alignRep)) {
 
+    View(otu_rarefy)
+    View(rep)
+    
     merged_data <- base::merge(x = otu_rarefy, y = rep, 
                                by.x = 1, by.y = 1, 
                                all.x = TRUE, sort = FALSE)

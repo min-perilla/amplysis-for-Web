@@ -1,17 +1,24 @@
 # api.R
 
-if (!requireNamespace("plumber", quietly = TRUE)) {
-  install.packages("plumber")
+# 安装缺失的 R 包
+packages <- c("swagger", "plumber", "svglite")
+for (pkg in packages) {
+  if (!requireNamespace(pkg, quietly = TRUE)) {
+    install.packages(pkg)
+  }
 }
 
+# 加载 R 包
 library(plumber)
+library(swagger)  # plumber 依赖 swagger
+library(svglite)  # 提供图片格式 svg 的支持
 
 
-# 20250225
+# 20250323
 # API 元数据
 #* @apiTitle amplysis for Web
 #* @apiDescription This is an API "amplysis for Web" created using Plumber.
-#* @apiVersion 1.0.0
+#* @apiVersion v1.1.0
 
 
 # ------------------------------------------------------------------------------
