@@ -1,0 +1,59 @@
+IvesGodfray             Host-parasitoid food web data
+Kcalc                   K statistic of phylogenetic signal
+color.plot.phylo        Color tip labels based on trait
+comdist                 Calculates inter-community mean pairwise
+                        distance
+comdistnt               Calculates inter-community mean nearest taxon
+                        distance
+comm.phylo.cor          Correlations between species co-occurrence and
+                        phylogenetic distances
+comm.phylo.qr           Quantile regression slopes between species
+                        co-occurrence and phylogenetic distances
+cor.table               Table of correlations and P-values
+df2vec                  Picante utility functions
+evol.distinct           Species' evolutionary distinctiveness
+expected.pd             Expected PD, PD Variance, and Edge Abundance
+                        Distribution of a phylogeny
+match.phylo.data        Match taxa in phylogeny and data
+matrix2sample           Convert community data matrix to Phylocom
+                        sample
+mntd                    Mean nearest taxon distance
+mpd                     Mean pairwise distance
+multiPhylosignal        Calculates phylogenetic signal for data.frame
+                        of traits
+pblm                    Phylogenetic Bipartite Linear Model
+pcd                     Phylogenetic Community Dissimilarity
+pd                      Calculate Faith's Phylogenetic Diversity
+phyEstimate             Phylogenetic estimation of traits for
+                        unobserved taxa
+phylocom                Phylocom default data
+phylosignal             Measure phylogenetic signal
+phylosor                Phylogenetic index of beta-diversity PhyloSor
+phylosor.rnd            Null PhyloSor values of phylogenetic
+                        beta-diversity
+phylostruct             Permutations to Test for Phylogenetic Signal in
+                        Community Composition
+picante-package         picante: Integrating Phylogenies and Ecology
+prune.sample            Prune tree to match community data or trait
+                        data
+psd                     Phylogenetic Species Diversity Metrics
+randomizeMatrix         Null models for community data matrix
+                        randomization
+raoD                    Rao's quadratic entropy
+readsample              Read Phylocom sample
+sample2matrix           Convert Phylocom sample to community data
+                        matrix
+ses.mntd                Standardized effect size of MNTD
+ses.mpd                 Standardized effect size of MPD
+ses.pd                  Standardized effect size of PD
+specaccum.psr           Phylogenetic Species Richness Sample-Based
+                        Rarefaction Curve
+species.dist            Species co-occurrence distances
+sppregs                 Regressions to Separate Phylogenetic Attraction
+                        and Repulsion
+tax.distinctiveness     Taxonomic distinctiveness sensu Vane-Wright or
+                        May
+traitgram               Draw phylogeny with nodes at trait positions
+unifrac                 Unweighted UniFrac distance between communities
+writesample             Write a Phylocom community sample file
+writetraits             Write a Phylocom traits formatted file
