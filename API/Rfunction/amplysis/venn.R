@@ -10,7 +10,7 @@ venn = function(otu,                       # otu 表格
                 metadata = NULL,           # metadata 表格
                 id_col = 1,                # The OTU_ID column is in which column.
                 group = "group",           # group
-                parallel_method = "mean"   # 平行样处理方法，默认 mean（平均）。可选：mean（平均）、sum（求和）、median（中位数）
+                replicate_method = "mean"   # 平行样处理方法，默认 mean（平均）。可选：mean（平均）、sum（求和）、median（中位数）
                 # write_file = F             # 是否导出分析数据
                 )
 {
@@ -27,20 +27,20 @@ venn = function(otu,                       # otu 表格
 
 
     ## 格式检查
-    # 检查 metadata 数据框是否包含 "sample"，"parallel"
+    # 检查 metadata 数据框是否包含 "sample"，"replicate"
     if ("sample" %in% base::tolower(colnames(metadata)) &&
-        "parallel" %in% base::tolower(colnames(metadata))) {
+        "replicate" %in% base::tolower(colnames(metadata))) {
       cat("\033[32mmetadata --> DONE\n\033[30m")
     } else {
-      stop("Please ensure that the metadata table contains the `sample` column and the `parallel` column!",
+      stop("Please ensure that the metadata table contains the `sample` column and the `replicate` column!",
            "\nsample: Sample ID (unique)",
-           "\nparallel: Parallel sample identifier")
+           "\nreplicate: replicate sample identifier")
     }
 
 
     ## 处理 metadata 表
-    # 提取 metadata 表格中的名为 "sample", "parallel", 形参 group1 的值, 形参 group2 的值的列
-    metadata2 <- metadata[, c("sample", "parallel", group)]
+    # 提取 metadata 表格中的名为 "sample", "replicate", 形参 group1 的值, 形参 group2 的值的列
+    metadata2 <- metadata[, c("sample", "replicate", group)]
 
     # 对于 metadata，丢弃存在 NA 值的行
     na_rows <- apply(metadata2, 1, function(row) any(is.na(row)))
@@ -70,18 +70,18 @@ venn = function(otu,                       # otu 表格
     allowedMethods <- base::tolower(c("mean", "sum", "median", "none"))
 
     # 转换为小写
-    parallel_method <- base::tolower(parallel_method)
+    replicate_method <- base::tolower(replicate_method)
 
     # 检查平行样处理方法
-    if(!parallel_method %in% allowedMethods) {
-      stop("请输入形参 parallel_method 的正确参数：\n",
-           "根据 `metadata` 表格中的 `parallel` 列进行处理，含有相同 `parallel` 值的样品视为平行样\n",
+    if(!replicate_method %in% allowedMethods) {
+      stop("请输入形参 replicate_method 的正确参数：\n",
+           "根据 `metadata` 表格中的 `replicate` 列进行处理，含有相同 `replicate` 值的样品视为平行样\n",
            "`mean`  : 取平均\n",
            "`sum`   : 求和\n",
            "`median`: 取中位数\n",
            "`none`  : 不处理平行样\n")
     } else {
-      cat("\033[32mParallel parallel_method: `", parallel_method, "`\n\033[30m", sep = "")
+      cat("\033[32mreplicate replicate_method: `", replicate_method, "`\n\033[30m", sep = "")
     }
 
 
@@ -95,16 +95,16 @@ venn = function(otu,                       # otu 表格
 
     ##
     # 合并分组
-    if (parallel_method != "none") {
+    if (replicate_method != "none") {
       otu4 <- otu3 %>%
         # 进行分组
         dplyr::group_by_at(dplyr::vars(names(otu3)[1], dplyr::all_of(group))) %>%
         dplyr::select(names(otu3)[1], group, "abun") %>%
-        dplyr::summarise_if(is.numeric, match.fun(parallel_method)) %>%
+        dplyr::summarise_if(is.numeric, match.fun(replicate_method)) %>%
         dplyr::ungroup()
       cat("\033[32motu4 ---> DONE\n\033[30m")
     } else {
-      otu4 <- otu3[ , setdiff(names(otu3), c("sample", "parallel"))]  # 移除列 "sample", "parallel"
+      otu4 <- otu3[ , setdiff(names(otu3), c("sample", "replicate"))]  # 移除列 "sample", "replicate"
       cat("\033[32motu4 ---> DONE2\n\033[30m")
     }
 
@@ -131,8 +131,8 @@ venn = function(otu,                       # otu 表格
     colnames(otu5) <- otu5[1, ]
     # 去除第一行
     otu5 <- otu5[-1, ]
-    
-    
+
+
   } else {
     # 当 metadata 为 NULL 时
     otu5 <- otu
@@ -155,26 +155,26 @@ venn = function(otu,                       # otu 表格
   # if(isTRUE(write_file)) {
   #   # 初始化列表
   #   df <- NULL
-  #   
+  #
   #   ##
   #   # 获取每个样本（组）中所有的OTU
   #   for (i in 1:length(colnames(otu5))){
   #     group <- colnames(otu5)[i]
   #     df[[group]] <- rownames(otu5)[which(otu5[,i]!= 0)]
   #   }
-  #   
+  #
   #   # 提取交集信息
   #   inter <- VennDiagram::get.venn.partitions(df)
-  #   
+  #
   #   # 处理交集信息
   #   for (i in 1:nrow(inter)){
   #     inter[i,'values'] <- paste(inter[[i,'..values..']], collapse = ', ')
   #   }
-  #   
+  #
   #   # 去除多余的数据列
   #   inter2 <- inter[, setdiff(names(inter), c("..set..", "..values.."))]
-  #   
-  #   
+  #
+  #
   #   # 保存文件
   #   # utils::write.csv(inter2, file = "Venn_inter.csv", row.names = FALSE)  # 保存数据框到 CSV 文件
   # }

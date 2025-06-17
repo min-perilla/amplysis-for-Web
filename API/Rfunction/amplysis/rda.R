@@ -13,7 +13,7 @@ RDA <- function(otu,              # OTU
                 metadata,         # 样本元数据
                 id_col = 1,       # OTU ID 列号
                 group = "group",  # 分组信息
-                parallel_method = "mean"   # 平行样处理方法，默认 mean（平均）。可选：mean（平均）、sum（求和）、median（中位数）
+                replicate_method = "mean"   # 平行样处理方法，默认 mean（平均）。可选：mean（平均）、sum（求和）、median（中位数）
 )
 {
 
@@ -28,20 +28,20 @@ RDA <- function(otu,              # OTU
 
 
   ## 格式检查
-  # 检查 metadata 数据框是否包含 "sample"，"parallel"
+  # 检查 metadata 数据框是否包含 "sample"，"replicate"
   if ("sample" %in% base::tolower(colnames(metadata)) &&
-      "parallel" %in% base::tolower(colnames(metadata))) {
+      "replicate" %in% base::tolower(colnames(metadata))) {
     cat("metadata --> DONE\n")
   } else {
-    stop("Please ensure that the metadata table contains the `sample` column and the `parallel` column!",
+    stop("Please ensure that the metadata table contains the `sample` column and the `replicate` column!",
          "\nsample: Sample ID (unique)",
-         "\nparallel: Parallel sample identifier")
+         "\nreplicate: replicate sample identifier")
   }
 
 
   ## 处理 metadata 表
-  # 提取 metadata 表格中的名为 "sample", "parallel", 形参 group1 的值, 形参 group2 的值的列
-  metadata2 <- metadata[, c("sample", "parallel", group)]
+  # 提取 metadata 表格中的名为 "sample", "replicate", 形参 group1 的值, 形参 group2 的值的列
+  metadata2 <- metadata[, c("sample", "replicate", group)]
 
   # 丢弃存在 NA 值的行
   na_rows <- apply(metadata2, 1, function(row) any(is.na(row)))
@@ -75,24 +75,24 @@ RDA <- function(otu,              # OTU
   allowedMethods <- base::tolower(c("mean", "sum", "median", "none"))
 
   # 转换为小写
-  parallel_method <- base::tolower(parallel_method)
+  replicate_method <- base::tolower(replicate_method)
 
   # 检查平行样处理方法
-  if(!parallel_method %in% allowedMethods) {
-    stop("请输入形参 parallel_method 的正确参数：\n",
-         "根据 `metadata` 表格中的 `parallel` 列进行处理，含有相同 `parallel` 值的样品视为平行样\n",
+  if(!replicate_method %in% allowedMethods) {
+    stop("请输入形参 replicate_method 的正确参数：\n",
+         "根据 `metadata` 表格中的 `replicate` 列进行处理，含有相同 `replicate` 值的样品视为平行样\n",
          "`mean`  : 取平均\n",
          "`sum`   : 求和\n",
          "`median`: 取中位数\n",
          "`none`  : 不处理平行样\n")
   } else {
-    cat("\033[32mParallel parallel_method: `", parallel_method, "`\n\033[30m", sep = "")
+    cat("\033[32mreplicate replicate_method: `", replicate_method, "`\n\033[30m", sep = "")
   }
 
 
   ##
   # 处理平行样
-  if (parallel_method != "none") {
+  if (replicate_method != "none") {
     ## 转换成长数据格式，并左连接 metadata2 表格
     otu3 <- otu2 %>%
       # 将数据框从宽格式转换为长格式
@@ -103,9 +103,9 @@ RDA <- function(otu,              # OTU
 
     otu4 <- otu3 %>%
       # 进行分组
-      dplyr::group_by_at(dplyr::vars(names(otu3)[1], dplyr::all_of("parallel"))) %>%
-      dplyr::select(names(otu3)[1], dplyr::all_of("parallel"), dplyr::all_of(group), dplyr::all_of("abun")) %>%
-      dplyr::summarise_if(is.numeric, ~round(match.fun(parallel_method)(.), 1)) %>%
+      dplyr::group_by_at(dplyr::vars(names(otu3)[1], dplyr::all_of("replicate"))) %>%
+      dplyr::select(names(otu3)[1], dplyr::all_of("replicate"), dplyr::all_of(group), dplyr::all_of("abun")) %>%
+      dplyr::summarise_if(is.numeric, ~round(match.fun(replicate_method)(.), 1)) %>%
       dplyr::ungroup()
     cat("\033[32motu4 ---> DONE\n\033[30m")
 
@@ -174,9 +174,9 @@ RDA <- function(otu,              # OTU
 
     env_t4 <- env_t3 %>%
       # 进行分组
-      dplyr::group_by_at(dplyr::vars(names(env_t3)[1], dplyr::all_of("parallel"))) %>%
-      dplyr::select(names(env_t3)[1], dplyr::all_of("parallel"), dplyr::all_of(group), dplyr::all_of("abun")) %>%
-      dplyr::summarise_if(is.numeric, ~round(match.fun(parallel_method)(.), 2)) %>%
+      dplyr::group_by_at(dplyr::vars(names(env_t3)[1], dplyr::all_of("replicate"))) %>%
+      dplyr::select(names(env_t3)[1], dplyr::all_of("replicate"), dplyr::all_of(group), dplyr::all_of("abun")) %>%
+      dplyr::summarise_if(is.numeric, ~round(match.fun(replicate_method)(.), 2)) %>%
       dplyr::ungroup()
     cat("\033[32menv_t4 ---> DONE\n\033[30m")
 
@@ -227,10 +227,10 @@ RDA <- function(otu,              # OTU
     #---------------------------------------------------------------------------
     ## 同步 metadata
     metadata3 = metadata2 %>%
-      # 保留列名为 "parallel" 和 group 代表的列
-      dplyr::select(dplyr::all_of("parallel"), dplyr::all_of(group)) %>%
-      # 对 parallel 列去重
-      dplyr::distinct(parallel, .keep_all = TRUE)
+      # 保留列名为 "replicate" 和 group 代表的列
+      dplyr::select(dplyr::all_of("replicate"), dplyr::all_of(group)) %>%
+      # 对 replicate 列去重
+      dplyr::distinct(replicate, .keep_all = TRUE)
     # 将第一列改名为 "sample"
     colnames(metadata3)[1] <- "sample"
 

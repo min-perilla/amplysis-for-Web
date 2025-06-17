@@ -10,103 +10,103 @@ library(tidyr)
 library(rlang)
 
 # 加载依赖函数
-source("./Rfunction/amplysis/parallel.R")
+source("./Rfunction/amplysis/replicate.R")
 
 ##
 # 网络分析
 network = function(
-    otu, 
-    tax, 
-    metadata, 
-    id_col = 1, 
-    
+    otu,
+    tax,
+    metadata,
+    id_col = 1,
+
     tax_cla = "genus",         # 分类等级，默认为“属”
     label = "phylum",          # 标签信息
-    group = "group", 
-    parallel_method = "none",  # 平行样处理方法
-    
+    group = "group",
+    replicate_method = "none",  # 平行样处理方法
+
     calc_method = "spearman",  # 计算方法，可选：spearman 或 pearson
     cluster_method = 1,        # 聚类方法，可选 1 - 11，默认为 1（Louvain 方法）
     normalize_flag = TRUE,     # 是否对 "eigenvector", "closeness", "constraint", "pagerank" 列进行数据标准化处理
-    
+
     .r = 0.6,   # 相关性
     .p = 0.05,  # 显著性
-    
-    
+
+
     fileName_edge = "edge",    # 边文件名
     fileName_node = "node"     # 节点文件名
-) 
+)
 {
   # 设置随机种子以确保结果可复现
   # set.seed(seed = seed)
-  
+
   # 检查计算方法输入是否正确
   valid_methods <- c("spearman", "pearson")  # 定义允许的计算方法
-  
+
   # 检查聚类方法是否合法
   if (is.na(cluster_method) || cluster_method < 1 || cluster_method > 11) {
     cat("Invalid input. Default method (Louvain) will be used.\n")
     cluster_method <- 1
   }
-  
+
   # 检查 calc_method 是否在允许的方法列表中
   if (!(calc_method %in% valid_methods)) {
     stop("Error: Calculation method calc_method must be either 'spearman' or 'pearson'.")
   } else {
     cat("\033[32m", "calc_method: ", calc_method, "\033[39m\n", sep = "")
   }
-  
-  
+
+
   ## 格式检查（metadata），处理平行样
-  otu_metadata = parallel(
-    otu = otu, metadata = metadata, id_col = id_col, group = group, 
-    parallel_method = parallel_method, digits = 0, metadata_out = T)
-  
+  otu_metadata = replicate(
+    otu = otu, metadata = metadata, id_col = id_col, group = group,
+    replicate_method = replicate_method, digits = 0, metadata_out = T)
+
   # 提取新的 otu 表和 metadata 表
   otu2 = otu_metadata[["otu"]]
   metadata2 = otu_metadata[["metadata"]]
-  
-  
-  
+
+
+
   ## 对齐 otu 和 tax
   otu_tax =  base::merge(
     x = otu2, y = tax,
     by.x = 0, by.y = id_col,
     all.x = F, all.y = F, sort = F)
-  
+
   # 如果行名单独成列
   if(id_col > 0) {
     ncol_otu = ncol(otu2) + 1
     ncol_tax = ncol(tax) - 1  # 6
-    
+
     # 行名不是单独成列
   } else if(id_col == 0) {
-    ncol_otu = ncol(otu2) + 1 
+    ncol_otu = ncol(otu2) + 1
     ncol_tax = ncol(tax)  # 6
   }
 
 
   otu2 = otu_tax[, c(1, c(2:ncol_otu))]
   tax2 = otu_tax[, c(1, c((ncol_otu +1):(ncol_otu + ncol_tax)))]
-  
-  
+
+
   # 将 otu 表的第一列转换为行名
   row.names(otu2) = otu2[, 1]  # 重命名行名
   otu2 = otu2[, -1]            # 移除第一列
 
-  
+
   # 将 tax 表的第一列转换为行名
   row.names(tax2) = tax2[, 1]  # 重命名行名
   tax2 = tax2[, -1]            # 移除第一列
   tax2[is.na(tax2)] <- "unknown"
-  
+
 
   ##
   # 将相同分类等级（genus）进行合并
   otu3 <- otu2 %>%                        # 需要转换为数据框，否则使用 row.names 函数会报错
     dplyr::group_by(tax2[[tax_cla]]) %>%  # 根据分类表的分类水平添加分类信息
     # 相同分类的进行合并，求和
-    dplyr::summarize_at(dplyr::vars(-dplyr::group_cols()), sum) %>%  
+    dplyr::summarize_at(dplyr::vars(-dplyr::group_cols()), sum) %>%
     dplyr::arrange(dplyr::desc(rowSums(dplyr::across(dplyr::where(is.numeric))))) %>%  # 根据行和，从高到低排序
     dplyr::ungroup()
 
@@ -114,15 +114,15 @@ network = function(
   otu3 = as.data.frame(otu3)
   row.names(otu3) = otu3[, 1]  # 重命名行名
   otu3 = otu3[, -1]            # 移除第一列
-  
+
   # 去除行都为 0 的行
   zero_sum_rows <- rowSums(otu3 == 0) == ncol(otu3)  # 检查每行的和是否为 0
   otu3_clean <- otu3[!zero_sum_rows, ]               # 去除所有值都为 0 的行
-  
+
   # 转置
   otu4 <- as.data.frame(t(otu3_clean))         # 转换数据格式
-  
-  
+
+
   ##
   # 使用spearman（或pearson）方法计算相关性矩阵
   correlate2 <- function(
@@ -149,8 +149,8 @@ network = function(
     if (!requireNamespace("purrr", quietly = TRUE)) {
       utils::install.packages("purrr")
     }
-    
-    
+
+
     # 对每对索引执行以下操作
     purrr::walk2(id$Var1, id$Var2, function(.idx, .idy) {
       # 计算相关性检验
@@ -174,7 +174,7 @@ network = function(
   }
 
   # cor_result = edge
-  
+
   # 将相关性矩阵和 p 值矩阵转换为上三角矩阵格式并去掉对角线元素
   as_upper_tri <- function(cor_result) {
     r <- cor_result$r
@@ -201,7 +201,7 @@ network = function(
     return(upper_triangle)
   }
 
-  
+
   ## 网络分析
   # 计算边文件：edge
   edge <- otu4 %>%
@@ -209,8 +209,8 @@ network = function(
     as_upper_tri() %>%
     # linkET::correlate(method = "spearman") %>%
     # linkET::as_md_tbl(type = "upper", diag = FALSE) %>%  # 将相关性矩阵转换为矩阵格式并保留上三角部分（不包括对角线）
-    dplyr::filter(abs(r) > .r, p < .p) %>%         # 根据绝对相关系数大于 0.6 且 p 值小于 0.05 来过滤边
-    
+    dplyr::filter(abs(r) >= .r, p <= .p) %>%         # 根据绝对相关系数大于 0.6 且 p 值小于 0.05 来过滤边
+
     dplyr::mutate(type = "Undirected",             # 添加新列 type，并赋值为 "Undirected"，表示边是无向边
                   id = seq_len(dplyr::n()),        # 添加新列 id，从 1 开始递增，用于标识边的唯一ID
                   label = "",                      # 添加新列 label，并初始化为空
@@ -220,9 +220,9 @@ network = function(
                   target = .colnames) %>%          # 重命名列名.colnames 为 target，表示边的终点
     dplyr::select(source, target, type, id, label, r, p, sign, abs_r)  # 选择需要保留的列，包括边的起点、终点、类型、ID、标签、相关系数 r、p 值、方向标识和绝对相关系数
 
-  
-  
-  
+
+
+
   # 定义函数来重命名列名
   rename_columns <- function(data, old_name, new_name) {
     if (old_name %in% names(data)) {
@@ -233,21 +233,21 @@ network = function(
     }
     return(data)
   }
-  
+
   # 假设 .rownames 和 .colnames 是列名字符串
   row_col_name <- ".rownames"
   col_col_name <- ".colnames"
-  
+
   r <- sym("r")
   p <- sym("p")
-  
+
   edge1 <- otu4 %>%
     correlate2(method = "spearman") %>%             # 使用 spearman（或pearson）方法计算相关性矩阵
     as_upper_tri() %>%
     # linkET::correlate(method = "spearman") %>%
     # linkET::as_md_tbl(type = "upper", diag = FALSE) %>%  # 将相关性矩阵转换为矩阵格式并保留上三角部分（不包括对角线）
-    dplyr::filter(abs(!!r) > .r, !!p < .p) %>%         # 根据绝对相关系数大于 0.6 且 p 值小于 0.05 来过滤边
-    
+    dplyr::filter(abs(!!r) >= .r, !!p <= .p) %>%           # 根据绝对相关系数大于等于 0.6 且 p 值小于等于 0.05 来过滤边
+
     dplyr::mutate(type = "Undirected",             # 添加新列 type，并赋值为 "Undirected"，表示边是无向边
                   id = seq_len(dplyr::n()),        # 添加新列 id，从 1 开始递增，用于标识边的唯一ID
                   label = "",                      # 添加新列 label，并初始化为空
@@ -256,18 +256,18 @@ network = function(
     rename_columns(row_col_name, "source") %>%     # 重命名列名.rownames 为 source，表示边的起点
     rename_columns(col_col_name, "target") %>%     # 重命名列名.colnames 为 target，表示边的终点
     dplyr::select("source", "target", "type", "id", "label", "r", "p", "sign", "abs_r")  # 选择需要保留的列，包括边的起点、终点、类型、ID、标签、相关系数 r、p 值、方向标识和绝对相关系数
-  
-  
-  
-  
-  
+
+
+
+
+
   ## 计算节点文件：node
   {
     edge_igraph <- igraph::graph_from_data_frame(edge, directed = FALSE) # 将边数据转换为 igraph 对象
     node <- igraph::as_data_frame(edge_igraph, "vertices")   # 将 igraph 对象转换为数据框
     }
-  
-  
+
+
   ## 给 edge 和 node 文件添加门信息（"label" 列）
   tax3 = tax2[, c(tax_cla, label)]             # 提取列
   tax3 = tax3[!duplicated(tax3[[tax_cla]]), ]  # duplicated() 用来检测哪些元素是重复的
@@ -275,7 +275,7 @@ network = function(
   # 将第二列的列名重命名为 "label"
   colnames(node)[2] = "label"
 
-  
+
   ## 计算网络属性
   # 度：dgree
   {
@@ -292,15 +292,15 @@ network = function(
     colnames(Betweenness) = c("name", "betweenness")                        # 重命名
     node <- merge(node, Betweenness, by = c("name" = "name"), sort = F)     # 左连接
   }
-  
+
   # 特征向量中心性（Eigenvector Centrality）
-  {  
+  {
     Eigenvector <- as.data.frame(igraph::eigen_centrality(edge_igraph)$vector)
     Eigenvector <- data.frame(row.names(Eigenvector), Eigenvector, row.names = NULL)
     colnames(Eigenvector) = c("name", "eigenvector")
-    node <- merge(node, Eigenvector, by = c("name" = "name"), sort = F) 
+    node <- merge(node, Eigenvector, by = c("name" = "name"), sort = F)
   }
-  
+
   # 接近中心性（Closeness Centrality）
   {
     Closeness <- as.data.frame(igraph::closeness(edge_igraph))
@@ -308,7 +308,7 @@ network = function(
     colnames(Closeness) = c("name", "closeness")
     node <- merge(node, Closeness, by = c("name" = "name"), sort = F)
   }
-  
+
   # 网络约束（Network Constraint）
   {
     Constraint <- as.data.frame(igraph::constraint(edge_igraph))
@@ -316,7 +316,7 @@ network = function(
     colnames(Constraint) = c("name", "constraint")
     node <- merge(node, Constraint, by = c("name" = "name"), sort = F)
   }
-  
+
   # PageRank，类似于 Google PageRank 算法，用于衡量一个节点的影响力
   {
     PageRank <- as.data.frame(igraph::page_rank(edge_igraph)$vector)
@@ -324,7 +324,7 @@ network = function(
     colnames(PageRank) = c("name", "pagerank")
     node <- merge(node, PageRank, by = c("name" = "name"), sort = F)
   }
-  
+
   # 局部聚集系数（Local Clustering Coefficient）
   {
     ClusteringCoefficient <- as.data.frame(igraph::transitivity(edge_igraph, type = "local"))
@@ -332,8 +332,8 @@ network = function(
     colnames(ClusteringCoefficient) = c("name", "clustering_coefficient")
     node <- merge(node, ClusteringCoefficient, by = c("name" = "name"), sort = F)
   }
-  
-  
+
+
   # 提示用户选择方法
   cat("You can choose from up to 11 cluster detection methods by entering the corresponding number:\n",
       "1: Louvain (default)\n",
@@ -347,8 +347,8 @@ network = function(
       "9: Spinglass\n",
       "10: Walktrap\n",
       "11: Fast Greedy\n")
-  
-  cat("\033[32m", "You are currently using method: ", cluster_method, 
+
+  cat("\033[32m", "You are currently using method: ", cluster_method,
       " - ", switch(cluster_method,
                    "1" = "Louvain (default)",
                    "2" = "Edge Betweenness",
@@ -362,7 +362,7 @@ network = function(
                    "10" = "Walktrap",
                    "11" = "Fast Greedy"),
       "\033[39m\n", sep = "")
-  
+
   # 选择相应的算法
   Community = switch(
     cluster_method,
@@ -378,22 +378,22 @@ network = function(
     "10" = igraph::cluster_spinglass(edge_igraph),
     "11" = igraph::cluster_walktrap(edge_igraph)
   )
-  
+
   # 模块度（Modularity）
   Community2 <- igraph::membership(Community)                                    # 计算群落分配
   Community3 <- as.data.frame(Community2)                                        # 计算群落分配
   Community3 <- data.frame(row.names(Community3), Community3, row.names = NULL)  # 将行名作为第一列
   colnames(Community3) = c("name", "community")                                  # 重命名
   node <- merge(node, Community3, by = c("name" = "name"), sort = F)             # 左连接
-  
+
   # 计算模块度值
   Modularity = igraph::modularity(Community)
   cat("The modularity of the network using Louvain is:", Modularity, "\n")
-  
-  
+
+
   ##
   # 对 "eigenvector", "closeness", "constraint", "pagerank" 列进行标准化
-  if(isTRUE(normalize_flag)){  
+  if(isTRUE(normalize_flag)){
     # 自定义标准化函数
     normalize_by_column_names <- function(data, columns_to_normalize) {
       for (col in columns_to_normalize) {
@@ -405,15 +405,15 @@ network = function(
       }
       return(data)
     }
-    
+
     # 指定要标准化的列名
     columns_to_normalize <- c("eigenvector", "closeness", "constraint", "pagerank")
-    
+
     # 对指定列进行标准化
     node <- normalize_by_column_names(node, columns_to_normalize)
   }
-  
-  
+
+
   ##
   # 计算 Zi
   edge_igraph2 = edge_igraph            # 复制
@@ -469,25 +469,25 @@ network = function(
       sigKsi[S] = 0              # 如果模块 S 中没有节点，标准差为 0
     }
   }
-  
-  
-  
+
+
+
   ###
   # 计算 Zi
   # z-score 值计算公式
   z = (Ki - Ksi[Community2]) / sigKsi[Community2]      # 计算每个节点的连接度 z-score
-  
-  
+
+
   ##
   z[is.infinite(z)] = 0                                # 将无穷大的值设为 0
   z[is.nan(z)] = 0                                     # 将 NaN 值设为0
   Zi = z
-  
+
   # 整合结果
   Zi <- data.frame(Ki, Zi, row.names = names(Ki))       # 将结果存储在数据框中并返回
-  
-  
-  
+
+
+
   ###
   # 计算 Pi
   igraph::V(edge_igraph2)$module = Community2  # 将群落成员身份信息添加到图对象的顶点属性中
@@ -495,18 +495,18 @@ network = function(
   A <- as.data.frame(igraph::as_adjacency_matrix(edge_igraph2, sparse = FALSE))  # 将图对象 graph 转化为邻接矩阵
   Ki2 = colSums(A)                            # 计算节点的度
   Ki_sum = t(rowsum(A, memb))                 # 计算模块内节点的度之和
-  
+
   # Pi 计算公式
   Pi = 1 - ((1 / Ki2^2) * rowSums(Ki_sum^2))  # 计算节点的参与系数
   Pi = as.data.frame(Pi)
-  
-  
+
+
   ##
   # 合并数据
   Zi_Pi = merge(Zi, Pi, by = "row.names", sort = F)
   Zi_Pi <- na.omit(Zi_Pi)   #NA 值最好去掉，不要当 0 处理
 
-  
+
   ##
   # 划分模块
   if(!nrow(Zi_Pi) == 0){
@@ -515,33 +515,33 @@ network = function(
     Zi_Pi[which(Zi_Pi$Zi >= 2.5 & Zi_Pi$Pi < 0.62),'type'] <- 'Module hubs'    # 模块中枢
     Zi_Pi[which(Zi_Pi$Zi >= 2.5 & Zi_Pi$Pi >= 0.62),'type'] <- 'Network hubs'  # 网络中枢
   }
-  
+
   # 合并数据
   node2 = merge(node, Zi_Pi, by.x = "name", by.y = "Row.names", sort = F)
 
-  
+
   ##
   # 添加自定义 color 信息
-  
-  
+
+
   ##
   # 计算各门（形参：label 代表的列名）信息的占比
-  
+
   ##
   # 输出文件
   fileName_edge = paste0(fileName_edge, ".csv")
   fileName_node = paste0(fileName_node, ".csv")
-  
+
   # utils::write.csv(x = edge, file = fileName_edge, row.names = F)
-  
+
   # 将 node 的 "name" 列名改成 "ID"
   names(node2)[names(node2) == "name"] <- "ID"
   # utils::write.csv(x = node2, file = fileName_node,  row.names = F)
 
 
-  
+
   cat("\033[32m--- Please use the `network_plot()` function for visualization. ---\n\033[0m")
-  
+
   ##
   # 返回结果
   result = NULL

@@ -12,7 +12,7 @@ pca <- function(otu,                # otu 表格
                 metadata,           # metadata 表格
                 id_col = 1,         # The OTU_ID column is in which column, defaulting to 0, which means there is no OTU_ID column, and the data is already purely numeric.
                 group = "group",    # group
-                parallel_method = "mean"   # 平行样处理方法，默认 mean（平均）。可选：mean（平均）、sum（求和）、median（中位数）
+                replicate_method = "mean"   # 平行样处理方法，默认 mean（平均）。可选：mean（平均）、sum（求和）、median（中位数）
 ) {
   # 检查形参 group 所表示的列名是否存在于 metadata 中
   if (!all(group %in% colnames(metadata))) {
@@ -22,24 +22,24 @@ pca <- function(otu,                # otu 表格
   } else {
     cat("\033[32mgroup: `", group, "`\n\033[30m", sep = "")
   }
-  
-  
+
+
   ## 格式检查
-  # 检查 metadata 数据框是否包含 "sample"，"parallel"
+  # 检查 metadata 数据框是否包含 "sample"，"replicate"
   if ("sample" %in% base::tolower(colnames(metadata)) &&
-      "parallel" %in% base::tolower(colnames(metadata))) {
+      "replicate" %in% base::tolower(colnames(metadata))) {
     cat("metadata --> DONE\n")
   } else {
-    stop("Please ensure that the metadata table contains the `sample` column and the `parallel` column!",
+    stop("Please ensure that the metadata table contains the `sample` column and the `replicate` column!",
          "\nsample: Sample ID (unique)",
-         "\nparallel: Parallel sample identifier")
+         "\nreplicate: replicate sample identifier")
   }
-  
-  
+
+
   ## 处理 metadata 表
-  # 提取 metadata 表格中的名为 "sample", "parallel", 形参 group1 的值, 形参 group2 的值的列
-  metadata2 <- metadata[, c("sample", "parallel", group)]
-  
+  # 提取 metadata 表格中的名为 "sample", "replicate", 形参 group1 的值, 形参 group2 的值的列
+  metadata2 <- metadata[, c("sample", "replicate", group)]
+
   # 丢弃存在 NA 值的行
   na_rows <- apply(metadata2, 1, function(row) any(is.na(row)))
   # 输出并丢弃 NA 值的行
@@ -50,111 +50,111 @@ pca <- function(otu,                # otu 表格
   } else {
     cat("No 'NA' values found in the grouping information.\n")
   }
-  
-  
+
+
   ## 处理 otu 表
   # 对于 otu，根据分组信息，丢弃相应的列
   sample_values <- c(names(otu)[1], metadata2[["sample"]])  # 获取 metadata2 中 "sample" 列的值
   keep_columns <- colnames(otu) %in% sample_values  # 创建一个逻辑向量，表示哪些列应该保留
   otu2 <- otu[, keep_columns]    # 保留 otu 中列名为 TRUE 的列
-  
-  
+
+
   ## 平行样处理
   # 定义允许的方法
   allowedMethods <- base::tolower(c("mean", "sum", "median", "none"))
-  
+
   # 转换为小写
-  parallel_method <- base::tolower(parallel_method)
-  
+  replicate_method <- base::tolower(replicate_method)
+
   # 检查平行样处理方法
-  if(!parallel_method %in% allowedMethods) {
-    stop("请输入形参 parallel_method 的正确参数：\n",
-         "根据 `metadata` 表格中的 `parallel` 列进行处理，含有相同 `parallel` 值的样品视为平行样\n",
+  if(!replicate_method %in% allowedMethods) {
+    stop("请输入形参 replicate_method 的正确参数：\n",
+         "根据 `metadata` 表格中的 `replicate` 列进行处理，含有相同 `replicate` 值的样品视为平行样\n",
          "`mean`  : 取平均\n",
          "`sum`   : 求和\n",
          "`median`: 取中位数\n",
          "`none`  : 不处理平行样\n")
   } else {
-    cat("\033[32mParallel parallel_method: `", parallel_method, "`\n\033[30m", sep = "")
+    cat("\033[32mreplicate replicate_method: `", replicate_method, "`\n\033[30m", sep = "")
   }
-  
-  
-  
-  
-  
+
+
+
+
+
   ##
   # 处理平行样
-  if (parallel_method != "none") {
+  if (replicate_method != "none") {
     ## 转换成长数据格式，并左连接 metadata2 表格
     otu3 <- otu2 %>%
       # 将数据框从宽格式转换为长格式
       tidyr::gather(key = "sample", value = "abun", -1) %>%
       dplyr::left_join(metadata2, by = c("sample" = "sample"))  # 将数据框 otu3 和 metadata2 按照 sample 列进行左连接
     cat("\033[32motu3 ---> DONE\n\033[30m")
-    
-    
+
+
     otu4 <- otu3 %>%
       # 进行分组
-      dplyr::group_by_at(dplyr::vars(names(otu3)[1], dplyr::all_of("parallel"))) %>%
-      dplyr::select(names(otu3)[1], dplyr::all_of("parallel"), dplyr::all_of(group), dplyr::all_of("abun")) %>%
-      dplyr::summarise_if(is.numeric, ~round(match.fun(parallel_method)(.), 1)) %>%
+      dplyr::group_by_at(dplyr::vars(names(otu3)[1], dplyr::all_of("replicate"))) %>%
+      dplyr::select(names(otu3)[1], dplyr::all_of("replicate"), dplyr::all_of(group), dplyr::all_of("abun")) %>%
+      dplyr::summarise_if(is.numeric, ~round(match.fun(replicate_method)(.), 1)) %>%
       dplyr::ungroup()
     cat("\033[32motu4 ---> DONE\n\033[30m")
-    
+
     ## 转换为宽数据
     # 将长格式的数据框 otu4 转换回宽格式
     otu5 <- otu4 %>%
       tidyr::spread(key = names(otu4)[1], value = "abun")
-    
+
     ##
     otu5 <- data.frame(otu5)        # 转化为数据框
     colnames(otu5)[1] <- "#OTU ID"  # 修改第一个列名为“#OTU_ID”
-    
+
     # 转置
     otu5 <- as.data.frame(t(otu5))
-    
+
     # 将行名转换成第一列
     row_names <- row.names(otu5)  # 获取行名
     otu5 <- data.frame(sample = row_names, otu5)  # 将行名作为新的第一列添加到数据框中
     row.names(otu5) <- NULL  # 重置行名
-    
+
     # 将第一行用作列名
     colnames(otu5) <- otu5[1, ]
     # 去除第一行
     otu5 <- otu5[-1, ]
-    
-    
+
+
     ## 恢复原来的排序
     otu6 <- otu5 %>%
       dplyr::arrange(match(otu5[[1]], otu2[[1]]))
 
     cat("\033[32motu6 ---> DONE\n\033[30m")
-    
-    
+
+
     ## 同步 metadata
     metadata3 = metadata2 %>%
-      # 保留列名为 "parallel" 和 group 代表的列
-      dplyr::select(dplyr::all_of("parallel"), dplyr::all_of(group)) %>%
-      # 对 parallel 列去重
-      dplyr::distinct(parallel, .keep_all = TRUE)
+      # 保留列名为 "replicate" 和 group 代表的列
+      dplyr::select(dplyr::all_of("replicate"), dplyr::all_of(group)) %>%
+      # 对 replicate 列去重
+      dplyr::distinct(replicate, .keep_all = TRUE)
     # 将第一列改名为 "sample"
     colnames(metadata3)[1] <- "sample"
-    
-    
-    
+
+
+
   } else {
     # 不处理平行样
-    
+
     otu6 = otu2
     metadata3 = metadata2
     cat("\033[32motu6 ---> DONE2\n\033[30m")
     cat("\033[32mmetadata3 ---> DONE2\n\033[30m")
   }
-  
-  
 
-  
-  
+
+
+
+
   ##
   # Obtain the column number of the OTU_ID.
   if(id_col > 0) {
@@ -164,33 +164,33 @@ pca <- function(otu,                # otu 表格
     otu6 <- otu6[, -id_col, drop = FALSE]  # Remove the OTU ID column
     cat("\033[32mid_col ---> DONE\n\033[30m")
   } else {}  # No OTU_ID column
-  
-  
-  
+
+
+
   # 转换成数字
   otu6[] <- lapply(otu6, function(x) as.numeric(trimws(x)))
-  
+
   ##
   otu_t <- t(otu6)                              # 转置 OTU 表
-  
+
   # 删除常数列或全零列
   otu_t <- otu_t[, apply(otu_t, 2, function(x) var(x) != 0)]
-  
+
   PCA <- prcomp(otu_t, scal = TRUE)       # pca 分析(此处使用 R 内置函数 prcomp() 函数进行分析)
-  
+
   df_PCA_sum <- summary(PCA)
   PoA <- df_PCA_sum$importance[2, ] * 100       #计算各主成分解释度
-  
+
   PC12 <- as.data.frame(PCA$x[, 1:2])           # 提取出 PC1 及 PC2 的坐标
   PC12 <- cbind(sample = rownames(PC12), PC12)  # 提取行名作为单独的一列
   PC12 <- merge(PC12, metadata3, by = "sample", sort = F)   # 将绘图数据和分组合并
-  
+
   # 重命名列名
   colnames(PC12)[colnames(PC12) == group] <- "group"
-  
+
   # 返回结果
   result <- list(PCA = PC12,  # 绘图数据
-                 PoA = PoA)   # 各主成分解释度  
+                 PoA = PoA)   # 各主成分解释度
   return(result)
 }
 

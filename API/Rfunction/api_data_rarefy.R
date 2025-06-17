@@ -134,8 +134,7 @@ api_data_rarefy <- function(req) {
 
   # 检查 result 是否为 list
   # 当 tax 非空的时候，result 一定是个 list
-  View(tax)
-  View(result)
+
   
   
   if (!is.null(tax) && method == "phyloseq") {
@@ -152,8 +151,6 @@ api_data_rarefy <- function(req) {
   # 对齐 Rep
   if(!is.null(rep) && isTRUE(alignRep)) {
 
-    View(otu_rarefy)
-    View(rep)
     
     merged_data <- base::merge(x = otu_rarefy, y = rep, 
                                by.x = 1, by.y = 1, 
