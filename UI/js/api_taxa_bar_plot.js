@@ -13,8 +13,8 @@ async function drawTaxaBarPlot() {
         const groupInformation2 = document.getElementById("species_stack_groupInformation2").value; // 获取实验分组2的值
         const group2 = groupInformation2 === "无" ? "NULL" : groupInformation2;  // 如果是“无”，则转换为“NULL”
 
-        const parallelInformation = document.getElementById("species_stack_parallelInformation").value; // 获取平行样标识
-        const parallelMethods = document.getElementById("species_stack_parallelMethods").value; // 获取平行样处理方法
+        const replicateInformation = document.getElementById("species_stack_replicateInformation").value; // 获取平行样标识
+        const replicateMethods = document.getElementById("species_stack_replicateMethods").value; // 获取平行样处理方法
 
         const classification = document.getElementById("species_stack_classification").value; // 获取分类等级的值
         const speciesCount = document.getElementById("species_stack_speciesCountInput").value; // 获取物种数量输入框的值
@@ -75,9 +75,9 @@ async function drawTaxaBarPlot() {
                 group1: groupInformation1,
                 group2: group2,
             },
-            parallel: {
-                information: parallelInformation,
-                parallel_method: parallelMethods,
+            replicate: {
+                information: replicateInformation,
+                replicate_method: replicateMethods,
             },
             classification: {
                 tax_cla: classification,

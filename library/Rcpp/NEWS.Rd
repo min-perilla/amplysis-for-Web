@@ -3,6 +3,87 @@
 \newcommand{\ghpr}{\href{https://github.com/RcppCore/Rcpp/pull/#1}{##1}}
 \newcommand{\ghit}{\href{https://github.com/RcppCore/Rcpp/issues/#1}{##1}}
 
+\section{Changes in Rcpp release version 1.0.14 (2025-01-11)}{
+  \itemize{
+    \item Changes in Rcpp API:
+    \itemize{
+      \item Support for user-defined databases has been removed (Kevin in
+      \ghpr{1314} fixing \ghit{1313})
+      \item The \code{SET_TYPEOF} function and macro is no longer used (Kevin
+      in \ghpr{1315} fixing \ghit{1312})
+      \item An errorneous cast to \code{int} affecting large return object
+      has been removed (Dirk in \ghpr{1335} fixing \ghpr{1334})
+      \item Compilation on DragonFlyBSD is now supported (Gábor Csárdi in
+      \ghpr{1338})
+      \item Use read-only \code{VECTOR_PTR} and \code{STRING_PTR} only with
+      with R 4.5.0 or later (Kevin in \ghpr{1342} fixing \ghit{1341})
+    }
+    \item Changes in Rcpp Attributes:
+    \itemize{
+      \item The \code{sourceCpp()} function can now handle input files with
+      read-only modes (Simon Guest in \ghpr{1346} fixing \ghit{1345})
+    }
+    \item Changes in Rcpp Deployment:
+    \itemize{
+      \item One unit tests for arm64 macOS has been adjusted; a macOS
+      continuous integration runner was added (Dirk in \ghpr{1324})
+      \item Authors@R is now used in DESCRIPTION as mandated by CRAN, the
+      \code{Rcpp.package.skeleton()} function also creates it (Dirk in
+      \ghpr{1325} and \ghpr{1327})
+      \item A single datetime format test has been adjusted to match a change
+      in R-devel (Dirk in \ghpr{1348} fixing \ghit{1347})
+    }
+    \item Changes in Rcpp Documentation:
+    \itemize{
+      \item The Rcpp Modules vignette was extended slightly following
+      \ghit{1322} (Dirk)
+      \item Pdf vignettes have been regenerated under Ghostscript 10.03.1 to
+      avoid a false positive by a Windows virus scanner (Iñaki in
+      \ghpr{1331})
+      \item A (large) number of (old) typos have been corrected in the
+      vignettes (Marco Colombo in \ghpr{1344})
+    }
+  }
+}
+
+\section{Changes in Rcpp 'hot-fix' release version 1.0.13-1 (2024-11-01)}{
+  \itemize{
+    \item Changes in Rcpp API:
+    \itemize{
+      \item Use read-only \code{VECTOR_PTR} and \code{STRING_PTR} only with
+      with R 4.5.0 or later (Kevin in \ghpr{1342} fixing \ghit{1341})
+    }
+    \item Changes in Rcpp Deployment:
+    \itemize{
+      \item Authors@R is now used in DESCRIPTION as mandated by CRAN
+    }
+  }
+}
+
+\section{Changes in Rcpp release version 1.0.13 (2024-07-11)}{
+  \itemize{
+    \item Changes in Rcpp API:
+    \itemize{
+      \item Set R_NO_REMAP if not already defined (Dirk in \ghpr{1296})
+      \item Add variadic templates to be used instead of generated code
+      (Andrew Johnson in \ghpr{1303})
+      \item Count variables were switches to \code{size_t} to avoid warnings
+      about conversion-narrowing (Dirk in \ghpr{1307})
+      \item Rcpp now avoids the usage of the (non-API) DATAPTR function when
+      accessing the contents of Rcpp Vector objects where possible. (Kevin in
+      \ghpr{1310})
+      \item Rcpp now emits an R warning on out-of-bounds Vector accesses. This
+      may become an error in a future Rcpp release. (Kevin in \ghpr{1310})
+      \item Switch \code{VECTOR_PTR} and \code{STRING_PTR} to new API-compliant
+      \code{RO} variants (Kevin in \ghpr{1317} fixing \ghit{1316})
+    }
+    \item Changes in Rcpp Deployment:
+    \itemize{
+      \item Small updates to the CI test containers have been made (\ghpr{1304})
+    }
+  }
+}
+
 \section{Changes in Rcpp release version 1.0.12 (2024-01-08)}{
   \itemize{
     \item Changes in Rcpp API:
@@ -1795,8 +1876,7 @@
     }
     \item Changes in Rcpp sugar:
     \itemize{
-      \item New function \code{na_omit} based on the StackOverflow thread
-      \url{http://stackoverflow.com/questions/15953768/}
+      \item New function \code{na_omit} based on a StackOverflow thread
       \item New function \code{is_finite} and \code{is_infinite} that
       reproduces the behavior of R's \code{is.finite} and
       \code{is.infinite} functions

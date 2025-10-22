@@ -76,16 +76,16 @@ function updateGroup2Options(group1Select, group2Select) {
 // -------------------------------------------------------------------
 // 平行样
 // 将平行样信息填充到具有指定类名的选择框
-function populateSelectWithParallel(className, parallels) {
+function populateSelectWithreplicate(className, replicates) {
     const selects = document.querySelectorAll(`.${className}`);
 
     selects.forEach(select => {
         select.innerHTML = '';  // 清空当前 <select> 元素的所有现有选项
 
-        parallels.forEach(parallel => { // 遍历传入的平行样选项数组
+        replicates.forEach(replicate => { // 遍历传入的平行样选项数组
             const option = document.createElement('option'); // 为每个平行样选项创建一个新的 <option> 元素
-            option.value = parallel; // 设置平行样的值
-            option.textContent = parallel; // 设置平行样的显示文本
+            option.value = replicate; // 设置平行样的值
+            option.textContent = replicate; // 设置平行样的显示文本
             select.appendChild(option); // 将 <option> 元素添加到当前 <select> 元素中
         });
 
@@ -99,10 +99,10 @@ function populateSelectWithParallel(className, parallels) {
 
 
 // 平行样处理方法
-// 为所有具有 class="parallelMethods" 的 <select> 元素添加选项
-function populateParallelMethodsSelect() {
+// 为所有具有 class="replicateMethods" 的 <select> 元素添加选项
+function populatereplicateMethodsSelect() {
     // 获取所有具有指定类名的选择框
-    const selects = document.querySelectorAll('.parallelMethods');
+    const selects = document.querySelectorAll('.replicateMethods');
 
     // 遍历每个选择框
     selects.forEach(select => {
@@ -127,10 +127,10 @@ function populateParallelMethodsSelect() {
 
         // 设置默认选项为“平均”，如果不是特定 ID 则为“平均”，
         // 否则设置为“没有处理”
-        if (['boxplot_parallelMethods',
-            'pca_parallelMethods', 'pcoa_parallelMethods',
-            'nmds_parallelMethods', 'rda_parallelMethods', 'cca_parallelMethods', 
-            'cooccurrence_network_parallelMethods'
+        if (['boxplot_replicateMethods',
+            'pca_replicateMethods', 'pcoa_replicateMethods',
+            'nmds_replicateMethods', 'rda_replicateMethods', 'cca_replicateMethods', 
+            'cooccurrence_network_replicateMethods'
         ].includes(select.id)) {
             select.value = 'none'; // 默认选择“不处理”
         } else {
@@ -153,7 +153,7 @@ document.getElementById("FileInput_metadata").addEventListener("change", functio
 
             const headers = Object.keys(data[0]); // 获取数据的表头
             const groups = new Set(); // 使用 Set 存储唯一的分组名称
-            const parallels = new Set(); // 使用 Set 存储唯一的平行样名称
+            const replicates = new Set(); // 使用 Set 存储唯一的平行样名称
 
             // 遍历列名，筛选出分组和平行样列
             headers.forEach(header => {
@@ -161,8 +161,8 @@ document.getElementById("FileInput_metadata").addEventListener("change", functio
                 if (lowerHeader.startsWith('group')) {
                     groups.add(header.trim()); // 识别以"group"开头的列作为分组信息
                 }
-                if (lowerHeader.includes('parallel')) {
-                    parallels.add(header.trim()); // 识别包含"parallel"的列作为平行样信息
+                if (lowerHeader.includes('replicate')) {
+                    replicates.add(header.trim()); // 识别包含"replicate"的列作为平行样信息
                 }
             });
 
@@ -175,15 +175,15 @@ document.getElementById("FileInput_metadata").addEventListener("change", functio
             );
 
             // 平行样
-            // 将平行样信息填充到具有 class="parallel_select" 的选择框
-            populateSelectWithParallel('parallel_select', Array.from(parallels));
+            // 将平行样信息填充到具有 class="replicate_select" 的选择框
+            populateSelectWithreplicate('replicate_select', Array.from(replicates));
 
             // 分组1和分组2互斥效果
             setupMutualExclusionById('species_stack_groupInformation1', 'species_stack_groupInformation2');
             // setupMutualExclusionById('chord_diagram_groupInformation1', 'chord_diagram_groupInformation2');
 
-            // 为所有具有 class="parallelMethods" 的 <select> 元素添加选项
-            populateParallelMethodsSelect();
+            // 为所有具有 class="replicateMethods" 的 <select> 元素添加选项
+            populatereplicateMethodsSelect();
         });
     }
 });

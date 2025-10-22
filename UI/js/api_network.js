@@ -10,7 +10,7 @@ async function NetworkAnalysis() {
 
         // 获取分组参数
         const groupInformation1 = document.getElementById("cooccurrence_network_groupInformation1").value; // 获取实验分组1的值
-        const parallelMethods = document.getElementById("cooccurrence_network_parallelMethods").value; // 获取平行样处理方法
+        const replicateMethods = document.getElementById("cooccurrence_network_replicateMethods").value; // 获取平行样处理方法
         // const classification = document.getElementById("cooccurrence_network_classification").value; // 获取分类等级
 
         // 获取方法参数
@@ -35,8 +35,8 @@ async function NetworkAnalysis() {
             },
 
             // 平行样
-            parallel: {
-                parallel_method: parallelMethods
+            replicate: {
+                replicate_method: replicateMethods
             },
 
             // 分类信息

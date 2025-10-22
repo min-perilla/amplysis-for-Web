@@ -10,8 +10,8 @@ async function drawCcaPlot() {
 
         // 获取其他参数
         const groupInformation1 = document.getElementById("cca_groupInformation1").value; // 获取实验分组1的值
-        const parallelInformation = document.getElementById("cca_parallelInformation").value; // 获取平行样标识
-        const parallelMethods = document.getElementById("cca_parallelMethods").value; // 获取平行样处理方法
+        const replicateInformation = document.getElementById("cca_replicateInformation").value; // 获取平行样标识
+        const replicateMethods = document.getElementById("cca_replicateMethods").value; // 获取平行样处理方法
 
         const ellipse_type = document.getElementById("cca_ellipse_type").value; // 获取置信椭圆计算方法
 
@@ -71,9 +71,9 @@ async function drawCcaPlot() {
             },
 
             // 平行样
-            parallel: {
-                information: parallelInformation,  // 平行样标识
-                parallel_method: parallelMethods
+            replicate: {
+                information: replicateInformation,  // 平行样标识
+                replicate_method: replicateMethods
             },
 
             // 方法

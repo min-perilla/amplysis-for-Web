@@ -10,8 +10,8 @@ async function drawRdaPlot() {
 
         // 获取其他参数
         const groupInformation1 = document.getElementById("rda_groupInformation1").value; // 获取实验分组1的值
-        const parallelInformation = document.getElementById("rda_parallelInformation").value; // 获取平行样标识
-        const parallelMethods = document.getElementById("rda_parallelMethods").value; // 获取平行样处理方法
+        const replicateInformation = document.getElementById("rda_replicateInformation").value; // 获取平行样标识
+        const replicateMethods = document.getElementById("rda_replicateMethods").value; // 获取平行样处理方法
 
         const ellipse_type = document.getElementById("rda_ellipse_type").value; // 获取置信椭圆计算方法
 
@@ -71,9 +71,9 @@ async function drawRdaPlot() {
             },
 
             // 平行样
-            parallel: {
-                information: parallelInformation,  // 平行样标识
-                parallel_method: parallelMethods
+            replicate: {
+                information: replicateInformation,  // 平行样标识
+                replicate_method: replicateMethods
             },
 
             // 颜色信息

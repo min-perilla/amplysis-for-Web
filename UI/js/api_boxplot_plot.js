@@ -11,8 +11,8 @@ async function drawBoxplotPlot() {
         // 获取其他参数
         // 分组
         const groupInformation1 = document.getElementById("boxplot_groupInformation1").value; // 获取实验分组1的值
-        const parallelInformation = document.getElementById("boxplot_parallelInformation").value; // 获取平行样标识
-        const parallelMethods = document.getElementById("boxplot_parallelMethods").value; // 获取平行样处理方法
+        const replicateInformation = document.getElementById("boxplot_replicateInformation").value; // 获取平行样标识
+        const replicateMethods = document.getElementById("boxplot_replicateMethods").value; // 获取平行样处理方法
 
         // 配色
         const colorText = document.getElementById("boxplot_colorText").value; // 最终颜色文本框
@@ -79,9 +79,9 @@ async function drawBoxplotPlot() {
             },
 
             // 平行样
-            parallel: {
-                information: parallelInformation,  // 平行样标识
-                parallel_method: parallelMethods   // 平行样处理方法
+            replicate: {
+                information: replicateInformation,  // 平行样标识
+                replicate_method: replicateMethods   // 平行样处理方法
             },
 
             // 颜色信息

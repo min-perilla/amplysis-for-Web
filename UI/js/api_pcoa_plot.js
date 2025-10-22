@@ -9,8 +9,8 @@ async function drawPcoaPlot() {
        
         // 获取其他参数
         const groupInformation1 = document.getElementById("pcoa_groupInformation1").value; // 获取实验分组1的值
-        const parallelInformation = document.getElementById("pcoa_parallelInformation").value; // 获取平行样标识
-        const parallelMethods = document.getElementById("pcoa_parallelMethods").value; // 获取平行样处理方法
+        const replicateInformation = document.getElementById("pcoa_replicateInformation").value; // 获取平行样标识
+        const replicateMethods = document.getElementById("pcoa_replicateMethods").value; // 获取平行样处理方法
 
         const colorText = document.getElementById("pcoa_colorText").value; // 获取颜色文本框中显示的最终颜色值
 
@@ -67,9 +67,9 @@ async function drawPcoaPlot() {
             },
 
             // 平行样
-            parallel: {
-                information: parallelInformation,  // 平行样标识
-                parallel_method: parallelMethods
+            replicate: {
+                information: replicateInformation,  // 平行样标识
+                replicate_method: replicateMethods
             },
 
             // 颜色信息

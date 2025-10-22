@@ -14,35 +14,79 @@ document.querySelectorAll(".group1Auto, .group2Auto").forEach(element => {
     });
 });
 
+// // 封装为复用的函数
+// function updateGroupValues(selectId1, selectId2 = null, pId1, pId2 = null) {
+//     // 获取分组1的选择值
+//     const group1Value = document.getElementById(selectId1).value;
+//     let group2Value = null;
+//     if (selectId2) {
+//         group2Value = document.getElementById(selectId2).value;
+//     }
+
+//     // 获取 sharedMetadataData 的列名
+//     const columnNames = Object.keys(sharedMetadataData[0] || {});
+//     // console.log("列名：", columnNames);
+
+//     // 定义更新 p 标签内容的函数
+//     function updatePContent(groupValue, columnNames, pId) {
+//         if (columnNames.includes(groupValue)) {
+//             const columnValues = sharedMetadataData.map(row => row[groupValue]);
+//             const uniqueValues = [...new Set(columnValues)]; // 去重
+
+
+//             // console.log(`已识别到列 "${groupValue}" 的值：`, uniqueValues);
+
+//             // 更新 p 标签内容
+//             document.getElementById(pId).textContent = uniqueValues.join(', ');
+//         } else {
+
+//             // console.log(`列 "${groupValue}" 不存在`);
+
+
+//             document.getElementById(pId).textContent = "无";
+//         }
+//     }
+
+//     // 更新分组1的内容
+//     updatePContent(group1Value, columnNames, pId1);
+
+//     // 如果 selectId2 和 pId2 不为 null，更新分组2的内容
+//     if (selectId2 && pId2) {
+//         updatePContent(group2Value, columnNames, pId2);
+//     }
+// }
 // 封装为复用的函数
 function updateGroupValues(selectId1, selectId2 = null, pId1, pId2 = null) {
     // 获取分组1的选择值
     const group1Value = document.getElementById(selectId1).value;
     let group2Value = null;
+
+    // 如果 selectId2 存在，则获取分组2的选择值
     if (selectId2) {
         group2Value = document.getElementById(selectId2).value;
     }
 
     // 获取 sharedMetadataData 的列名
     const columnNames = Object.keys(sharedMetadataData[0] || {});
-    // console.log("列名：", columnNames);
 
     // 定义更新 p 标签内容的函数
     function updatePContent(groupValue, columnNames, pId) {
-        if (columnNames.includes(groupValue)) {
-            const columnValues = sharedMetadataData.map(row => row[groupValue]);
+        // 检查 groupValue 是否有效，并且是否存在于列名中
+        if (groupValue && columnNames.includes(groupValue)) {
+            // 获取对应列的所有值，并去除空值（空字符串或仅包含空格的字符串）
+            const columnValues = sharedMetadataData.map(row => row[groupValue]).filter(value => value.trim() !== "");
+
             const uniqueValues = [...new Set(columnValues)]; // 去重
 
-
-            // console.log(`已识别到列 "${groupValue}" 的值：`, uniqueValues);
-
-            // 更新 p 标签内容
-            document.getElementById(pId).textContent = uniqueValues.join(', ');
+            // 如果唯一值为空，则显示 "无"
+            if (uniqueValues.length > 0) {
+                // 将去重后的值连接成字符串，并更新 p 标签内容
+                document.getElementById(pId).textContent = uniqueValues.join(', ');
+            } else {
+                document.getElementById(pId).textContent = "无";
+            }
         } else {
-
-            // console.log(`列 "${groupValue}" 不存在`);
-
-
+            // 如果该列不存在或值无效，显示 "无"
             document.getElementById(pId).textContent = "无";
         }
     }
@@ -52,17 +96,28 @@ function updateGroupValues(selectId1, selectId2 = null, pId1, pId2 = null) {
 
     // 如果 selectId2 和 pId2 不为 null，更新分组2的内容
     if (selectId2 && pId2) {
-        updatePContent(group2Value, columnNames, pId2);
+        // 只有在 group2Value 有效时才更新分组2的内容
+        if (group2Value.trim() !== "") {
+            updatePContent(group2Value, columnNames, pId2);
+        } else {
+            // 如果 group2Value 无效（例如空值或空字符串），直接显示 "无"
+            document.getElementById(pId2).textContent = "无";
+        }
     }
 }
+
+
+
 
 
 
 // 添加事件监听，调用函数以实现实时更新
 // ---------------------------------------------------------------------------------------
 // 物种堆叠图
-document.getElementById("species_stack_groupInformation1").addEventListener("change", () => {
-    updateGroupValues("species_stack_groupInformation1", "species_stack_groupInformation2", "species_stack_group1Auto", "species_stack_group2Auto");
+["species_stack_groupInformation1", "species_stack_groupInformation2"].forEach(selectId => {
+    document.getElementById(selectId).addEventListener("change", () => {
+        updateGroupValues("species_stack_groupInformation1", "species_stack_groupInformation2", "species_stack_group1Auto", "species_stack_group2Auto");
+    });
 });
 
 // // 弦图

@@ -11,8 +11,8 @@ async function drawUpsetPlot() {
         // 获取其他参数
         // 分组
         const groupInformation1 = document.getElementById("upset_groupInformation1").value;     // 获取实验分组1的值
-        const parallelInformation = document.getElementById("upset_parallelInformation").value; // 获取平行样标识
-        const parallelMethods = document.getElementById("upset_parallelMethods").value;         // 获取平行样处理方法
+        const replicateInformation = document.getElementById("upset_replicateInformation").value; // 获取平行样标识
+        const replicateMethods = document.getElementById("upset_replicateMethods").value;         // 获取平行样处理方法
 
         // 配色
         const colorText = document.getElementById("upset_colorText").value;             // 获取颜色文本框中显示的最终颜色值
@@ -72,9 +72,9 @@ async function drawUpsetPlot() {
             },
 
             // 平行样
-            parallel: {
-                information: parallelInformation,
-                parallel_method: parallelMethods
+            replicate: {
+                information: replicateInformation,
+                replicate_method: replicateMethods
             },
 
 

@@ -14,8 +14,8 @@ async function drawHeatmapPlot() {
         const groupInformation2 = document.getElementById("heatmap_groupInformation2").value; // 获取实验分组2的值
         const group2 = groupInformation2 === "无" ? "NULL" : groupInformation2;  // 如果是“无”，则转换为“NULL”
 
-        const parallelInformation = document.getElementById("heatmap_parallelInformation").value; // 获取平行样标识
-        const parallelMethods = document.getElementById("heatmap_parallelMethods").value; // 获取平行样处理方法
+        const replicateInformation = document.getElementById("heatmap_replicateInformation").value; // 获取平行样标识
+        const replicateMethods = document.getElementById("heatmap_replicateMethods").value; // 获取平行样处理方法
 
         const classification = document.getElementById("heatmap_classification").value; // 获取分类等级的值
         const speciesCount = document.getElementById("heatmap_speciesCountInput").value; // 获取物种数量输入框的值
@@ -99,9 +99,9 @@ async function drawHeatmapPlot() {
             },
 
             // 平行样本处理信息
-            parallel: {
-                information: parallelInformation,  // 平行样标识，描述平行样本的标识
-                parallel_method: parallelMethods,  // 平行样本的处理方法，描述如何处理平行样
+            replicate: {
+                information: replicateInformation,  // 平行样标识，描述平行样本的标识
+                replicate_method: replicateMethods,  // 平行样本的处理方法，描述如何处理平行样
             },
 
             // 分类信息

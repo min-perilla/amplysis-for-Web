@@ -9,8 +9,8 @@ async function drawVennPlot() {
 
         // 获取其他参数
         const groupInformation1 = document.getElementById("venn_groupInformation1").value; // 获取实验分组1的值
-        const parallelInformation = document.getElementById("venn_parallelInformation").value; // 获取平行样标识
-        const parallelMethods = document.getElementById("venn_parallelMethods").value; // 获取平行样处理方法
+        const replicateInformation = document.getElementById("venn_replicateInformation").value; // 获取平行样标识
+        const replicateMethods = document.getElementById("venn_replicateMethods").value; // 获取平行样处理方法
 
         const colorText = document.getElementById("venn_colorText").value; // 获取颜色文本框中显示的最终颜色值
 
@@ -49,9 +49,9 @@ async function drawVennPlot() {
             },
 
             // 平行样
-            parallel: {
-                information: parallelInformation,
-                parallel_method: parallelMethods
+            replicate: {
+                information: replicateInformation,
+                replicate_method: replicateMethods
             },
 
             // 配色
